@@ -6,6 +6,9 @@ from djcelery.models import PERIOD_CHOICES
 
 from ..models import Url, UrlLog, MonitorSite
 
+import difflib
+DIFFER = difflib.Differ()
+
 
 class IntervalScheduleSerializer(serializers.Serializer):
     every = serializers.ChoiceField(choices=PERIOD_CHOICES)
@@ -28,7 +31,20 @@ class UrlSerializer(serializers.ModelSerializer):
 
 
 class CreateUrlSerializer(serializers.Serializer):
-    url = serializers.URLField(required=True)
+    url = serializers.URLField(allow_null=True)
+
+
+class CompareUrlSerializer(serializers.Serializer):
+    a_pk = serializers.PrimaryKeyRelatedField(queryset=UrlLog.objects.all(), allow_null=False)
+    b_pk = serializers.PrimaryKeyRelatedField(queryset=UrlLog.objects.all(), allow_null=False)
+    diff = serializers.SerializerMethodField()
+
+    def get_diff(self, obj):
+        a = obj.get('a_pk').data.get('content')
+        b = obj.get('b_pk').data.get('content')
+
+        diff = difflib.unified_diff(a, b, lineterm='')
+        return '\n'.join(list(diff))
 
 
 class UrlLogSerializer(serializers.ModelSerializer):
