@@ -60,7 +60,7 @@ class UrlLogSerializer(serializers.ModelSerializer):
         exclude = ('data',)
 
     def get_previous(self, obj):
-        previous = obj.__class__.objects.exclude(pk=obj.pk).filter(url=obj.url, pk__lt=obj.pk).first()
+        previous = obj.__class__.objects.exclude(pk=obj.pk).filter(url=obj.url, pk__lt=obj.pk).last()
         if previous is not None:
             return previous.pk
         return None
