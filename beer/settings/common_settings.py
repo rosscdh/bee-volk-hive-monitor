@@ -39,10 +39,12 @@ HELPER_APPS = (
     'pipeline',
     'corsheaders',
     'django_extensions',
-    'rest_framework_swagger',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_swagger',
 
     'djcelery',
+    'actstream',
 )
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + HELPER_APPS
@@ -134,6 +136,7 @@ CORS_ORIGIN_WHITELIST = ()
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
