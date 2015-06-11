@@ -34,6 +34,8 @@ class CreateUrlSerializer(serializers.Serializer):
 class UrlLogSerializer(serializers.ModelSerializer):
     url = UrlSerializer()
 
+    content =  serializers.CharField(source='data.content')
+
     previous = serializers.SerializerMethodField()
     next = serializers.SerializerMethodField()
 
