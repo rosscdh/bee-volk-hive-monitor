@@ -29,11 +29,23 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('url', models.URLField(max_length=255, db_index=True)),
-                ('schema', models.CharField(max_length=10, null=True, db_index=True)),
-                ('host', models.CharField(max_length=128, null=True, db_index=True)),
-                ('port', models.CharField(max_length=4, null=True, db_index=True)),
-                ('query_string', models.CharField(max_length=255, null=True, db_index=True)),
+                ('scheme', models.CharField(max_length=10, null=True, db_index=True)),
+                ('netloc', models.CharField(max_length=128, null=True, db_index=True)),
+                ('path', models.CharField(max_length=128, null=True, db_index=True)),
+                ('params', models.CharField(max_length=128, null=True, db_index=True)),
+                ('query', models.CharField(max_length=128, null=True, db_index=True)),
+                ('fragment', models.CharField(max_length=128, null=True, db_index=True)),
                 ('data', jsonfield.fields.JSONField(default={})),
+            ],
+        ),
+        migrations.CreateModel(
+            name='UrlLog',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('digest', models.CharField(max_length=255, db_index=True)),
+                ('date_of', models.DateTimeField(auto_now_add=True)),
+                ('data', jsonfield.fields.JSONField(default={})),
+                ('url', models.ForeignKey(to='monitor.Url')),
             ],
         ),
         migrations.AddField(

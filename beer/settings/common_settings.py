@@ -32,6 +32,7 @@ DJANGO_APPS = (
 PROJECT_APPS = (
     'beer.apps.api',
     'beer.apps.monitor',
+    'beer.apps.phearjs',
 )
 
 HELPER_APPS = (
