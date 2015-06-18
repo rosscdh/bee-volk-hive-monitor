@@ -11,6 +11,7 @@ templates/dashboard/*
 # ignore the locally generated dash as its uploaded seperately
 /scantrust/apps/dash/static/dashboard/*
 
+bower_components/
 # C extensions
 *.so
 # Packages

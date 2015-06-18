@@ -45,6 +45,7 @@ HELPER_APPS = (
 
     'djcelery',
     'actstream',
+    'djangobower',
 )
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + HELPER_APPS
@@ -68,6 +69,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'pipeline.finders.PipelineFinder',
+    'djangobower.finders.BowerFinder',
 )
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
@@ -121,6 +123,53 @@ ROLLBAR = {
     'branch': 'master',
     'root': BASE_DIR,
 }
+
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, '../', 'bower_components')
+BOWER_PATH = '/usr/local/bin/bower'
+BOWER_INSTALLED_APPS = (
+    'angular-animate#1.3.8',
+    'angular-cookies#1.3.4',
+    'angular-touch#1.3.4',
+    'angular-sanitize#1.3.4',
+    'jquery#2.1.1',
+    'angular-resource#1.3.4',
+    'angular-ui-router#0.2.13',
+    'bootstrap-sass-official#3.3.1',
+    'angular-bootstrap#0.12.0',
+    'modernizr#2.8.3',
+    'satellizer#^0.9.2',
+    'angular-breadcrumb#0.3.2',
+    'angular-moment#0.9.0',
+    'moment#2.9.0',
+    'ngstorage#0.3.0',
+    'angular-local-storage#0.1.5',
+    'angular-scroll#0.6.5',
+    'ngSticky#1.7.9',
+    'angular-carousel#0.3.10',
+    'angular-fontawesome#0.3.2',
+    'angular-loading-bar#0.7.1',
+    'angular-messages#1.4.0',
+    'angular-validation-match#1.3.0',
+    'angular-slugify#1.0.0',
+    'ng-simplePagination#1.0.3',
+    'angular-truncate',
+    'ng-file-upload#3.1.0',
+    'ng-file-upload-shim#3.1.0',
+    'angular-intercom#2.0.4',
+    'angular-mixpanel#1.1.0',
+    'ngDialog#0.3',
+    'angular-mailchimp#*',
+    'allmighty-autocomplete#*',
+    'v-accordion#1.2.3',
+    'jquery-ui#1.11.4',
+    'FitVids#1.1.0',
+    'flexslider#2.5.0',
+    'inview#*',
+    'jquery-placeholder#2.1.2',
+    'isMobile#0.3.6',
+    'animate.css#3.3.0',
+    'bootstrap-hover-dropdown#2.1.3'
+)
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ()

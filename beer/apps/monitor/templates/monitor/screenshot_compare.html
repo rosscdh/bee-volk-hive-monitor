@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Image analysis</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="http://huddle.github.io/Resemble.js/libs/twitter-bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="http://huddle.github.io/Resemble.js/demoassets/resemble.css?v1">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="page-header">
+          <h1>Screenshot analysis and comparison</h1>
+        </div>
+      </header>
+
+      <section role="main">
+        <div class="row">
+          <div class="span12">
+            <div class="row">
+              <div class="span6">
+                <b>Screen A</b>
+                <div id="dropzone1" class="small-drop-zone">
+                  <img id="fileA" src="data:image/png;base64,{{object.screenshot}}" alt="" title="" border="0" />
+                </div>
+                <b>Screen B</b>
+                <div id="dropzone2" class="small-drop-zone">
+                  <img id="fileB" src="data:image/png;base64,{{object_b.screenshot}}" alt="" title="" border="0" />
+                </div>
+              </div>
+              <div class="span6">
+                <div id="image-diff" class="">
+                  Please wait...<br/>Diff will appear here.
+                </div>
+                <br/>
+
+                <div class="btn-group buttons" style="display:none">
+                  <button class="btn active" id="raw">Ignore nothing</button>
+                  <button class="btn" id="colors">Ignore colors</button>
+                  <button class="btn" id="antialising">Ignore antialiasing</button>
+                </div>
+
+                <br/>
+                <br/>
+
+                <div class="btn-group buttons" style="display:none">
+                  <button class="btn active" id="pink">Pink</button>
+                  <button class="btn" id="yellow">Yellow</button>
+                </div>
+                <br/>
+                <br/>
+
+                <div class="btn-group buttons" style="display:none">
+                  <button class="btn active" id="flat">Flat</button>
+                  <button class="btn" id="movement">Movement</button>
+                  <button class="btn" id="flatDifferenceIntensity">Flat with diff intensity</button>
+                  <button class="btn" id="movementDifferenceIntensity">Movement with diff intensity</button>
+                </div>
+                <br/>
+                <br/>
+
+                <div class="btn-group buttons" style="display:none">
+                  <button class="btn active" id="opaque">Opaque</button>
+                  <button class="btn" id="transparent">Transparent</button>
+                </div>
+
+                <br/>
+                <br/>
+                <div id="diff-results" style="display:none;">
+                  <p>
+                    <strong>The second image is <span id="mismatch"></span>% different compared to the first.
+                    <span id="differentdimensions" style="display:none;">And they have different dimensions.</span></strong>
+                  </p>
+                  <p>
+                    Use the buttons above to change the comparison algorithm.  Perhaps you don't care about color? Annoying antialiasing causing too much noise?  Resemble.js offers multiple comparison options.
+                  </p>
+                </div>
+
+                <p id="thesame" style="display:none;">
+                  <strong>These images are the same!</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+      </footer>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://huddle.github.io/Resemble.js/resemble.js"></script>
+
+    <script>
+    $( document ).ready(function() {
+
+      function onComplete(data){
+        console.log(data)
+        var time = Date.now();
+        var diffImage = new Image();
+        diffImage.src = data.getImageDataUrl();
+
+        $('#image-diff').html(diffImage);
+
+        $(diffImage).click(function(){
+          window.open(diffImage.src, '_blank');
+        });
+
+        $('.buttons').show();
+
+        if(data.misMatchPercentage == 0){
+          $('#thesame').show();
+          $('#diff-results').hide();
+        } else {
+          $('#mismatch').text(data.misMatchPercentage);
+          if(!data.isSameDimensions){
+            $('#differentdimensions').show();
+          } else {
+            $('#differentdimensions').hide();
+          }
+          $('#diff-results').show();
+          $('#thesame').hide();
+        }
+      }
+      var fileA = new Image();
+      fileA.src = $('#fileA').attr('src');
+      var fileB = new Image();
+      fileB.src = $('#fileB').attr('src');
+
+      resembleControl = resemble(fileA.src).compareTo(fileB.src).onComplete(onComplete);
+
+    });
+    </script>
+  </body>
+</html>

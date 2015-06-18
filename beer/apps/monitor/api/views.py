@@ -7,7 +7,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 # from rest_framework_extensions.mixins import CacheResponseMixin
 
-from ..models import MonitorSite, UrlLog
+from ..models import MonitorSite, Url, UrlLog
 from .serializers import MonitorSiteSerializer, UrlSerializer, CreateUrlSerializer, CompareUrlSerializer, UrlLogSerializer
 from ..services import FetchUrlService
 
@@ -21,6 +21,15 @@ class MonitorViewset(viewsets.ModelViewSet):
     model = MonitorSite
     serializer_class = MonitorSiteSerializer
     queryset = MonitorSite.objects.all()
+
+
+class UrlViewset(viewsets.ModelViewSet):
+    """
+    Views showing more information about the posts
+    """
+    model = Url
+    serializer_class = UrlSerializer
+    queryset = Url.objects.all()
 
 
 class UrlLogViewset(viewsets.ModelViewSet):

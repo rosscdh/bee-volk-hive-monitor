@@ -24,12 +24,6 @@ class PeriodicTaskSerializer(serializers.Serializer):
         exclude = ('data',)
 
 
-class UrlSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Url
-        exclude = ('data',)
-
-
 class CreateUrlSerializer(serializers.Serializer):
     url = serializers.URLField(allow_null=True)
 
@@ -48,10 +42,10 @@ class CompareUrlSerializer(serializers.Serializer):
 
 
 class UrlLogSerializer(serializers.ModelSerializer):
-    url = UrlSerializer()
+    #url = UrlSerializer()
 
-    content =  serializers.CharField(source='data.content')
-
+    content = serializers.CharField(source='data.content')
+    screenshot = serializers.CharField()
     previous = serializers.SerializerMethodField()
     next = serializers.SerializerMethodField()
 
@@ -70,6 +64,14 @@ class UrlLogSerializer(serializers.ModelSerializer):
         if next is not None:
             return next.pk
         return None
+
+
+class UrlSerializer(serializers.ModelSerializer):
+    history = UrlLogSerializer(many=True)
+
+    class Meta:
+        model = Url
+        exclude = ('data',)
 
 
 class MonitorSiteSerializer(serializers.ModelSerializer):

@@ -8,5 +8,6 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^v1/docs/', include('rest_framework_swagger.urls')),
                        url(r'^v1/', include('beer.apps.api.urls', namespace='api')),
+                       url(r'^', include('beer.apps.monitor.urls', namespace='monitor')),
                        ) + static(settings.STATIC_URL,
                                   document_root=settings.STATIC_ROOT)

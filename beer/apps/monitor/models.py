@@ -16,12 +16,26 @@ class Url(models.Model):
 
     data = JSONField(default={})
 
+    def __unicode__(self):
+        return self.url
+
+    @property
+    def history(self):
+        return self.urllog_set.all()
+
 
 class UrlLog(models.Model):
     url = models.ForeignKey('monitor.Url')
     digest = models.CharField(max_length=255, db_index=True)
     date_of = models.DateTimeField(auto_now=False, auto_now_add=True)
     data = JSONField(default={})
+
+    def __unicode__(self):
+        return '%s (%s) on %s' % (self.url, self.digest, self.date_of)
+
+    @property
+    def screenshot(self):
+        return self.data.get('capture', None)
 
 
 class MonitorSite(models.Model):
