@@ -80,6 +80,9 @@ STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, '../', 'static')
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, '../', 'media')
+MEDIA_URL = '/media/'
+
 ROOT_URLCONF = 'beer.urls'
 
 WSGI_APPLICATION = 'beer.wsgi.application'

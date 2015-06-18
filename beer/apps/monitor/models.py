@@ -30,6 +30,9 @@ class UrlLog(models.Model):
     date_of = models.DateTimeField(auto_now=False, auto_now_add=True)
     data = JSONField(default={})
 
+    class Meta:
+        ordering = ('-date_of', )
+
     def __unicode__(self):
         return '%s (%s) on %s' % (self.url, self.digest, self.date_of)
 
