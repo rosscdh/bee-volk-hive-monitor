@@ -48,7 +48,9 @@ class ThambnailView(DetailView):
         passed to the constructor of the response class.
         """
         im = base64.b64decode(self.object.screenshot)
-        options = {'size': (self.kwargs.get('w', 320), self.kwargs.get('h', 200)), 'crop': True}
+        crop = self.request.GET.get('crop', True)
+        crop = crop in (True,1,'1',u'1','true', 'True','yes','y')
+        options = {'size': (self.kwargs.get('w', 320), self.kwargs.get('h', 200)), 'crop': crop}
         img_temp = NamedTemporaryFile(delete=True, dir=os.path.join(settings.MEDIA_ROOT, 'thumbs'))
         img_temp.write(im)
         img_temp.flush()

@@ -41,6 +41,10 @@ HELPER_APPS = (
     'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_auth',
+    'rest_auth.registration',
+    'allauth',
+    'allauth.account',
     'rest_framework_swagger',
 
     'djcelery',
@@ -60,6 +64,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     #    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'pipeline.middleware.MinifyHTMLMiddleware',
     'django.middleware.gzip.GZipMiddleware',
     # must come last
@@ -157,7 +162,7 @@ BOWER_INSTALLED_APPS = (
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = ()
+CORS_ORIGIN_WHITELIST = ('*',)
 # CORS_ALLOW_HEADERS = (
 #     'x-requested-with',
 #     'content-type',
@@ -170,6 +175,7 @@ CORS_ORIGIN_WHITELIST = ()
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
@@ -188,6 +194,7 @@ REST_FRAMEWORK = {
     'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 5,
     'PAGINATE_BY': 15
 }
+
 
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
 PIPELINE_CSSMIN_BINARY = 'cssmin'
