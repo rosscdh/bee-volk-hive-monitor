@@ -1,14 +1,18 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth import get_user_model
 from actstream import action
 
 from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework.response import Response
 # from rest_framework_extensions.mixins import CacheResponseMixin
+from .serializers import (MonitorSiteSerializer,
+                          UrlSerializer,
+                          CreateUrlSerializer,
+                          CompareUrlSerializer,
+                          UrlLogSerializer)
 
 from ..models import MonitorSite, Url, UrlLog
-from .serializers import MonitorSiteSerializer, UrlSerializer, CreateUrlSerializer, CompareUrlSerializer, UrlLogSerializer
+from ..signals import url_log_created
 from ..services import FetchUrlService
 
 
@@ -49,6 +53,7 @@ class FetchUrlView(generics.CreateAPIView):
         data = {'log': {'object': None}}
 
         if serializer.is_valid():
+
             s = FetchUrlService(url=serializer.validated_data['url'])
             data = s.process()
 
@@ -59,6 +64,15 @@ class FetchUrlView(generics.CreateAPIView):
                 action.send(user, verb='the url has changed', action_object=data['log'].get('object'), target=data['url'].get('object'))
             else:
                 action.send(user, verb='the url has not changed', action_object=data['log'].get('object'), target=data['url'].get('object'))
+
+            #
+            # Emit the url_log_created
+            # need to provide user so we can associate properly
+            #
+            url_log_created.send(sender=self,
+                                 user=request.user,
+                                 url=data['url'].get('object'),
+                                 url_log=data['log'].get('object'))
 
         return Response(UrlLogSerializer(data.get('log').get('object')).data)
 
