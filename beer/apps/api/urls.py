@@ -3,7 +3,7 @@ from django.conf.urls import patterns, url
 
 from rest_framework import routers
 
-from beer.apps.monitor.api.views import (MonitorViewset,
+from beer.apps.monitor.api.views import (SiteViewset,
                                          UrlViewset,
                                          UrlLogViewset,
                                          FetchUrlView,
@@ -16,7 +16,7 @@ router = routers.SimpleRouter(trailing_slash=False)
 """
 Generic ViewSets
 """
-router.register(r'monitor', MonitorViewset, base_name='monitor')
+router.register(r'sites', SiteViewset, base_name='monitor')
 router.register(r'url', UrlViewset, base_name='url')
 router.register(r'log', UrlLogViewset, base_name='log')
 

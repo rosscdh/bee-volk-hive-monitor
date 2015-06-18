@@ -44,8 +44,8 @@ class CompareUrlSerializer(serializers.Serializer):
 class UrlLogSerializer(serializers.ModelSerializer):
     #url = UrlSerializer()
 
-    content = serializers.CharField(source='data.content')
-    screenshot = serializers.CharField()
+    #content = serializers.CharField(source='data.content')
+    #screenshot = serializers.CharField()
     previous = serializers.SerializerMethodField()
     next = serializers.SerializerMethodField()
 

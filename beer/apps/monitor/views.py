@@ -1,7 +1,17 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
+from django.core.files import File
+from django.http import HttpResponse
 from django.views.generic import DetailView
+from django.core.files.temp import NamedTemporaryFile
+
+from easy_thumbnails.files import Thumbnailer, get_thumbnailer
 
 from .models import UrlLog, Url
+
+from PIL import Image
+from io import BytesIO
+import base64
 
 
 class UrlLogScreenshotView(DetailView):
@@ -28,3 +38,24 @@ class UrlHistoryView(DetailView):
     model = Url
     template_name = 'monitor/url_detail_history.html'
 
+
+class ThambnailView(DetailView):
+    model = UrlLog
+
+    def render_to_response(self, context, **response_kwargs):
+        """
+        Returns a response, using the `response_class` for this
+        view, with a template rendered with the given context.
+        If any keyword arguments are provided, they will be
+        passed to the constructor of the response class.
+        """
+        #im = Image.open(BytesIO(base64.b64decode(self.object.screenshot)))
+        im = base64.b64decode(self.object.screenshot)
+        options = {'size': (self.kwargs.get('w', 320), self.kwargs.get('h', 200)), 'crop': True}
+        img_temp = NamedTemporaryFile(delete=True, dir=settings.MEDIA_ROOT)
+        img_temp.write(im)
+        img_temp.flush()
+
+        thumb = get_thumbnailer(Thumbnailer(img_temp)).get_thumbnail(options)
+
+        return HttpResponse(thumb, content_type="image/png")

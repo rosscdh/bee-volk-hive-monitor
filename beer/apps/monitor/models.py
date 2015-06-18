@@ -40,8 +40,9 @@ class UrlLog(models.Model):
 
 class MonitorSite(models.Model):
     user = models.ForeignKey('auth.User')
+    netloc = models.CharField(max_length=128, db_index=True)
     name = models.CharField(max_length=128, db_index=True)
-    task = models.ForeignKey('djcelery.PeriodicTask')
-    schedule = models.ForeignKey('djcelery.IntervalSchedule')
+    task = models.ForeignKey('djcelery.PeriodicTask', blank=True, null=True)
+    schedule = models.ForeignKey('djcelery.IntervalSchedule', blank=True, null=True)
     urls = models.ManyToManyField('monitor.Url')
     data = JSONField(default={})

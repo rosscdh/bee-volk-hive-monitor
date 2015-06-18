@@ -14,9 +14,9 @@ from ..services import FetchUrlService
 
 # class MonitorViewset(CacheResponseMixin,
 #                      viewsets.ReadOnlyModelViewSet):
-class MonitorViewset(viewsets.ModelViewSet):
+class SiteViewset(viewsets.ModelViewSet):
     """
-    Views showing more information about the posts
+    Views showing more information about the site
     """
     model = MonitorSite
     serializer_class = MonitorSiteSerializer
@@ -25,7 +25,6 @@ class MonitorViewset(viewsets.ModelViewSet):
 
 class UrlViewset(viewsets.ModelViewSet):
     """
-    Views showing more information about the posts
     """
     model = Url
     serializer_class = UrlSerializer
@@ -34,7 +33,6 @@ class UrlViewset(viewsets.ModelViewSet):
 
 class UrlLogViewset(viewsets.ModelViewSet):
     """
-    Views showing more information about the posts
     """
     model = UrlLog
     serializer_class = UrlLogSerializer
