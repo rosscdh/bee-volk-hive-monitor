@@ -1,0 +1,70 @@
+{% extends 'me/base.html' %}{% load url from future %}{% load crispy_forms_tags %}
+
+{% block page_title %}Settings — {{ block.super }}{% endblock%}
+
+{% block body %}
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active"><a href="#home" role="tab" data-toggle="tab">Account Settings</a></li>
+  <li><a href="#password" role="tab" data-toggle="tab">Password</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+
+    <div class="tab-pane fade in active" id="home">
+
+          <div class="content-header notifications-header clearfix">
+              <div class="container">
+                  <div class="col-sm-6 col-sm-offset-3">
+                      <h3>Account Settings<br/><small>Manage your account settings</small></h3>
+                  </div>
+              </div>
+          </div>
+          <div class="container">
+              <div class="col-sm-6 col-sm-offset-3" role="main">
+                  <div class="modal-body">  
+                  {% crispy form %}
+                  </div>
+              </div>
+          </div>
+
+    </div>
+
+    <div class="tab-pane fade in" id="password">
+
+          <div class="content-header notifications-header clearfix">
+              <div class="container">
+                  <div class="col-sm-6 col-sm-offset-3">
+                      <h3>Password<br/><small>Change your password</small></h3>
+                  </div>
+              </div>
+          </div>
+          <div class="container">
+              <div class="col-sm-6 col-sm-offset-3" role="main">
+                  {% crispy view.password_form %}
+              </div>
+          </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+
+{% block css %}
+    {{ block.super }}
+    {{ form.media.css }}
+<style>
+.tab-content{
+  border:0px;
+  margin:0px;
+  padding:0px;
+}
+</style>
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    {{ form.media.js }}
+{% endblock %}

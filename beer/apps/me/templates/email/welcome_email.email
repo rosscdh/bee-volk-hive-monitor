@@ -1,0 +1,34 @@
+{% extends 'email/base.email' %}{% load i18n %}
+
+{% block subject_line %}{% blocktrans %}Welcome to Scantrust{% endblocktrans %}{% endblock %}
+
+{% block html_content %}{% blocktrans with user_salutation=user.data.salutation user_full_name=user.get_full_name user_phone=user.data.phone user_email=user.email company_name=company.name company_address=company.data.address company_website=company.data.website activation_link=activation_link %}
+<p>Dear {{ user.get_full_name }}</p>
+
+<p>Thank you for registering with ScanTrust.</p>
+
+<p>Your information has been sent to our Support Engineers:<br/>
+<b>Company Information:</b><br/>
+- <b>Name:</b> {{ company_name }}<br/>
+- <b>Address:</b> {{ company_address }}<br/>
+- <b>Website:</b> {{ company_website }}
+</p>
+
+<p><b>Person in charge:</b><br/>
+- <b>Salutation:</b> {{ user_salutation }}<br/>
+- <b>Name:</b> {{ user_full_name }}<br/>
+- <b>Phone:</b> {{ user_phone }}<br/>
+- <b>Email:</b> {{ user_email }}
+</p>
+
+<p>Please click the activation-link to confirm you are the right contact: {{ activation_link }}</p>
+
+<p>After you clicked the activation-link we will contact you within one business day to confirm your registration: Should you not receive his call within one working day, please email registration@scantrust.com.</p>
+
+<p>We look forward to being your brand protection partner!</p>
+
+
+<p>Your account has been successfully created on Scantrust.</p>
+<p>In future you can login using this email address and the password you entered on signup.</p>
+
+{% endblocktrans %}{% endblock %}

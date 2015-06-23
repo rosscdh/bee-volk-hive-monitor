@@ -49,3 +49,6 @@ class MonitorSite(models.Model):
     schedule = models.ForeignKey('djcelery.IntervalSchedule', blank=True, null=True)
     urls = models.ManyToManyField('monitor.Url')
     data = JSONField(default={})
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.name, self.netloc,)

@@ -17,7 +17,7 @@ class PhearJsService(object):
         self.PHEARJS_URL = kwargs.get('PHEARJS_URL',
                                       getattr(settings,
                                               'PHEARJS_URL',
-                                              'http://localhost:8100')
+                                              'http://localhost:8183')
                                       )
 
     def process(self, **kwargs):

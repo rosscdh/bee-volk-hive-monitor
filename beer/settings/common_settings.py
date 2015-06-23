@@ -11,6 +11,7 @@ BASE_URL = 'http://localhost:8000'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'vjcfpgezcvvksf5yl@zi=nfpmr_2*q251d9r=o#$0h9+frwivl'
+URL_ENCODE_SECRET_KEY = '^@+2#(=7oa3_d29zl=9sn!zehf6at*9=wrkli3+y03lc*qhl@4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,6 +34,8 @@ PROJECT_APPS = (
     'beer.apps.api',
     'beer.apps.monitor',
     'beer.apps.phearjs',
+    'beer.apps.me',
+    'beer.apps.role_permission',
 )
 
 HELPER_APPS = (
@@ -41,10 +44,6 @@ HELPER_APPS = (
     'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_auth',
-    'rest_auth.registration',
-    'allauth',
-    'allauth.account',
     'rest_framework_swagger',
 
     'djcelery',
@@ -192,9 +191,8 @@ REST_FRAMEWORK = {
         'rest_framework.filters.DjangoFilterBackend',
     ),
     'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 5,
-    'PAGINATE_BY': 15
+    'PAGINATE_BY': 30
 }
-
 
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
 PIPELINE_CSSMIN_BINARY = 'cssmin'

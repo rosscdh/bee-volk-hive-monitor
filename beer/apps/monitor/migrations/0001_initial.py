@@ -18,10 +18,11 @@ class Migration(migrations.Migration):
             name='MonitorSite',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('netloc', models.CharField(max_length=128, db_index=True)),
                 ('name', models.CharField(max_length=128, db_index=True)),
                 ('data', jsonfield.fields.JSONField(default={})),
-                ('schedule', models.ForeignKey(to='djcelery.IntervalSchedule')),
-                ('task', models.ForeignKey(to='djcelery.PeriodicTask')),
+                ('schedule', models.ForeignKey(blank=True, to='djcelery.IntervalSchedule', null=True)),
+                ('task', models.ForeignKey(blank=True, to='djcelery.PeriodicTask', null=True)),
             ],
         ),
         migrations.CreateModel(
@@ -47,6 +48,9 @@ class Migration(migrations.Migration):
                 ('data', jsonfield.fields.JSONField(default={})),
                 ('url', models.ForeignKey(to='monitor.Url')),
             ],
+            options={
+                'ordering': ('-date_of',),
+            },
         ),
         migrations.AddField(
             model_name='monitorsite',
