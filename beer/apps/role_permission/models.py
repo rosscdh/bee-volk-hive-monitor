@@ -15,7 +15,7 @@ class Participant(PermissionProviderMixin,
     """
     Model to store the Users permissions with regards to a project
     """
-    site = models.ForeignKey('monitor.MonitorSite')
+    stream = models.ForeignKey('stream.Stream')
     user = models.ForeignKey('auth.User')
     is_owner = models.BooleanField(default=False,
                                    db_index=True)  # is this user a matter owner

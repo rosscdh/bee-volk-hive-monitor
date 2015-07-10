@@ -32,7 +32,12 @@ DJANGO_APPS = (
 
 PROJECT_APPS = (
     'beer.apps.api',
-    'beer.apps.monitor',
+
+    'beer.apps.monitor',  # depreciated
+
+    'beer.apps.stream',
+    'beer.apps.data_source',
+
     'beer.apps.phearjs',
     'beer.apps.me',
     'beer.apps.role_permission',
@@ -45,6 +50,8 @@ HELPER_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
+
+    'social.apps.django_app.default',
 
     'djcelery',
     'actstream',
@@ -215,3 +222,14 @@ PIPELINE_JS = {
     #     'output_filename': 'dist/pages.js',
     # }
 }
+
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.open_id.OpenIdAuth',
+    'social.backends.google.GoogleOpenId',
+    'social.backends.google.GoogleOAuth2',
+    'social.backends.google.GoogleOAuth',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.yahoo.YahooOpenId',
+    'django.contrib.auth.backends.ModelBackend',
+)
