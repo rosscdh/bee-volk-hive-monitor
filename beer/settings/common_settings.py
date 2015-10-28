@@ -4,6 +4,8 @@ from ..local_settings import ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN
 
 import os
 
+DJANGO_ENV = os.getenv('DJANGO_ENV', os.getenv('RAILS_ENV', 'development'))
+
 #
 # Custom url used in the api to prefix reverses as we dont have access to request object
 #
@@ -36,10 +38,10 @@ PROJECT_APPS = (
     'beer.apps.me',
     'beer.apps.role_permission',
 
-    'beer.apps.monitor',  # depreciated
-
     'beer.apps.stream',
     'beer.apps.data_source',
+
+    'beer.apps.evt',
 
     'beer.apps.box',
     'beer.apps.client',
@@ -55,6 +57,7 @@ HELPER_APPS = (
     'rest_framework_swagger',
 
     'social.apps.django_app.default',
+    'pinax.eventlog',
 
     'djcelery',
     'actstream',
@@ -241,3 +244,24 @@ AUTHENTICATION_BACKENDS = (
 PUSHER_APP_ID = 79947
 PUSHER_KEY = 'cf7fc048e21bd39e6f82'
 PUSHER_SECRET = '01d612aade08edc9dfde'
+
+
+INFLUX_DB = {
+    'host': os.getenv('INFLUX_DB_HOST', '192.168.99.100'),
+    'port': os.getenv('INFLUX_DB_PORT', '32768'),
+    'username': os.getenv('INFLUX_DB_USERNAME', 'root'),
+    'password': os.getenv('INFLUX_DB_PASSWORD', 'root'),
+    'database': os.getenv('INFLUX_DB_DATABASE', 'beekeep'),
+}
+
+try:
+    env_path = os.path.join(BASE_DIR, 'config/environments/{DJANGO_ENV}/record_ly/local_settings.py'.format(DJANGO_ENV=DJANGO_ENV))
+    environment_settings = open(env_path)
+    exec(environment_settings)
+except Exception as e:
+    pass
+
+try:
+    from .local_settings import *
+except:
+    pass

@@ -3,6 +3,7 @@ venv
 *.db
 *.py[cod]
 .env
+/config/*
 local_settings.py
 templates/dashboard/*
 /static/*

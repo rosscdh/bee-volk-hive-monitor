@@ -8,7 +8,7 @@ class BaseObjectsTestCase(APITestCase):
     """
     Sets up base objects and provides test helpers for login etc
     """
-    fixtures = ('monitor.json',)
+    #fixtures = ('',)
 
     def setUp(self):
         # setup api object to interact with the api
