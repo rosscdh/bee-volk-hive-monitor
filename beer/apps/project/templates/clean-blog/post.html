@@ -1,0 +1,265 @@
+{% load humanize staticfiles templatetag_handlebars compressed %}<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{ project.name }}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static "clean_blog/css/bootstrap.min.css" %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{% static "clean_blog/css/clean-blog.css" %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+    div.post-heading{
+        
+        text-shadow: 0 0 10px #000;
+    }
+    </style>
+</head>
+
+<body>
+    {% csrf_token %}
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <a class="navbar-brand" href="{{ project.website }}">{{ project.name }}</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Main Content Page -->
+    <div id="content"></div>
+
+    <!-- Page Templates -->
+    {% tplhandlebars "tpl-layout-basic" %}
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url('{{ object.picture }}');">
+        <div class="container">
+            <div class="row">
+                &nbsp;
+            </div>
+        </div>
+        <!-- <small class="meta">Posted on {{ object.updated_time }}</small> -->
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+                <h1 data-name="name" contenteditable="true">{{ object.name }}</h1>
+                <h2 class="subheading" data-name="message" contenteditable="true">{{ object.message }}</h2>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 editable" data-name="description" contenteditable="true">
+                    {{ object.description }}
+                </div>
+            </div>
+        </div>
+    </article>
+    {% endtplhandlebars %}
+
+    {% tplhandlebars "tpl-layout-image_left" %}
+    <div class="jumbotron">
+    
+        <div class="col-md-7">
+            <div class="col-md-3">
+                <img src="{{ object.picture }}" border="0" class="img-rounded" />
+            </div>
+            <h1 data-name="name" contenteditable="true">{{ object.name }}</h1>
+            <p class="lead" data-name="message" contenteditable="true">{{ object.message }}</p>
+        </div>
+    
+    </div>
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 editable" data-name="description" contenteditable="true">
+                    {{ object.description }}
+                </div>
+            </div>
+        </div>
+    </article>
+    {% endtplhandlebars %}
+
+    {% tplhandlebars "tpl-layout-image" %}
+    <div class="container">
+        <div class="row featurette">
+            <div class="col-md-5">
+                <img src="{{ object.picture }}" border="0" class="featurette-image img-responsive img-rounded" />
+            </div>
+            <div class="col-md-7">
+                <h2 class="featurette-heading" data-name="name" contenteditable="true">{{ object.name }}</h2>
+                <p class="lead" data-name="message" contenteditable="true">{{ object.message }}</p>
+            </div>
+        </div>
+
+    </div>
+    {% endtplhandlebars %}
+
+    {% tplhandlebars "tpl-layout-video_full" %}
+        <!-- HTML5 Video Code "Video For Everybody" http://camendesign.com/code/video_for_everybody -->
+        <video autoplay="autoplay" loop="loop" autobuffer="autobuffer" muted="muted" poster="{{ object.picture }}" width="640" height="360">
+
+            <source src="{{ object.video }}" type="video/webm" />
+
+            <object type="application/x-shockwave-flash" data="/static/swf/flowplayer-3.2.1.swf" width="640" height="360">
+                <param name="movie" value="/static/swf/flowplayer-3.2.1.swf" />
+                <param name="allowFullScreen" value="true" />
+                <param name="wmode" value="transparent" />
+                <param name="flashVars" value="config={'playlist':['{{ object.picture }}',{'url':'{{ object.video }}','autoPlay':false}]}" />
+                <img alt="{{ object.name }}" src="{{ object.picture }}" width="640" height="360" title="{{ object.description }}" />
+            </object>
+        </video>
+        <script type="text/javascript" charset="utf-8">
+        $(function(){
+            // Helper function to Fill and Center the HTML5 Video
+            jQuery('video, object').maximage('maxcover');
+        });
+        </script>
+    {% endtplhandlebars %}
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <ul class="list-inline text-center">
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; {{ project.name }} 2014</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/js-signals/1.0.0/js-signals.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/hasher/1.2.0/hasher.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/crossroads/0.12.0/crossroads.min.js"></script> -->
+
+    <script src="{% static "js/maximage-2.0.js" %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static "clean_blog/js/bootstrap.min.js" %}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{% static "clean_blog/js/clean-blog.min.js" %}"></script>
+
+    {% compressed_js 'ckeditor' %}
+    {% compressed_js 'beer' %}
+
+    <script>
+    'use strict';
+    $(document).ready(function( ) {
+
+        $( "body" ).beer_controller({
+            'feed': {{ view.feed_json|safe }},
+            'project': {{ view.project_json|safe }},
+            'templates': {
+                'basic': $("script#tpl-layout-basic").html(),
+                'image': $("script#tpl-layout-image").html(),
+                'image_left': $("script#tpl-layout-image_left").html(),
+                'video_full': $("script#tpl-layout-video_full").html(),
+            },
+        });
+        window.beer = $( "body" ).data( 'beer-beer_controller' );
+
+
+  
+  //handle hash changes
+  function handleChanges(newHash, oldHash){
+    if ( newHash !== NaN && newHash !== '' ) {
+        console.log(newHash)
+        var pk = parseInt( newHash );
+        window.beer.goto( pk );
+    }
+  }
+
+  hasher.changed.add(handleChanges); //add hash change listener
+  hasher.initialized.add(handleChanges); //add initialized listener (to grab initial value in case it is already set)
+  hasher.init(); //initialize hasher (start listening for history changes)
+
+
+        CKEDITOR.on( 'instanceCreated', function( event ) {
+            var editor = event.editor,
+                element = editor.element;
+
+                // stop bad encoding
+                editor.config.htmlEncodeOutput = false;
+                editor.config.entities =  false;
+                editor.config.basicEntities = false;
+
+            // handle change event
+            editor.on('change', function (e) {
+                editor.config.htmlEncodeOutput = false;
+                window.send_html = editor.getData();
+                //console.log(window.send_html)
+                window.send_data = $(e.sender.element.$).data();
+
+                if ( window.timer_event !== null ) {
+                    window.clearTimeout(window.timer_event);
+                }
+                window.timer_event = window.setTimeout(function() {
+                    var data = {};
+                    // set the manual assigned values
+                    data[window.send_data.name] = window.send_html;
+
+                    $.ajax({
+                      "type": 'PATCH',
+                      "url": "{% url 'feeditem-detail' pk=object.pk %}",
+                      "data": JSON.stringify(data),
+                      "dataType": 'json',
+                      "contentType": 'application/json',
+                      "beforeSend": function (jqXHR, settings) {
+                          // Pull the token out of the DOM.
+                          jqXHR.setRequestHeader('X-CSRFToken', $('input[name=csrfmiddlewaretoken]:first').val());
+                      },
+                      "success": function ( data ) {
+                            //console.log(data)
+                      }
+                    });
+
+                }, 300)
+
+            });
+        });
+
+    });
+    </script>
+</body>
+
+</html>

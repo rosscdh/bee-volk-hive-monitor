@@ -1,0 +1,118 @@
+{% extends 'project/base.html' %}{% load compressed beer_tags %}
+
+{% block page_title %}{{ project.name }}{% endblock %}
+
+{% block navigation %}
+{{ block.super }}
+<script>
+// window.fbAsyncInit = function() {
+//   FB.init({
+//     appId      : '343632075713954',
+//     xfbml      : true,
+//     version    : 'v2.1'
+//   });
+// };
+
+// (function(d, s, id){
+//    var js, fjs = d.getElementsByTagName(s)[0];
+//    if (d.getElementById(id)) {return;}
+//    js = d.createElement(s); js.id = id;
+//    js.src = "//connect.facebook.net/en_US/sdk/debug.js";
+//    fjs.parentNode.insertBefore(js, fjs);
+//  }(document, 'script', 'facebook-jssdk'));
+ </script>
+{% endblock %}
+
+{% block jumbo %}
+{% csrf_token %}
+<div>&nbsp;</div>
+<div id="project-detail-base"></div>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+  <div class="row">
+    <!-- Feed -->
+      <!-- <div id="feed-list" class="col-md-3"></div> -->
+      <!-- PlayList -->
+      <div id="playlist-feed-list" class="col-md-4"></div>
+      <!-- Preview -->
+      <div id="feed-preview" class="col-md-8"></div>
+  </div>
+
+</div>
+
+<div id="project-detail-collaborators" class="col-md-4"></div>
+
+{% endblock %}
+
+
+{% block css %}
+<style>
+.feeditem_list_picture {
+background-repeat: no-repeat;
+background-position: 320px 0px;
+height: 100px;
+}
+</style>
+{% endblock css %}
+
+{% block js %}
+
+<script>
+'use strict';
+/**
+* Setup the base javascript objects for our react handler
+**/
+var Today = moment();
+
+var Project = {{ view.project_json|safe|default:'{}' }};
+
+var Playlist = {{ view.playlist_json|safe|default:'{}' }};
+
+var Video = {};
+
+var Links = {
+  'publish': "{% if view.current_video %}{% url 'publish:settings' slug=view.current_video.slug %}{% endif %}",
+  'add_video': "{% url 'feed:create_video_feeditem' project_slug=project.slug %}",
+  'project_boxes': "{% url 'project:boxes' slug=project.slug %}",
+};
+
+var UploaderConfig = {
+   signerUrl: "{#% url 's3signature' %#}",
+   aws_key: '{{ AWS_ACCESS_KEY_ID }}',
+   bucket: '{{ AWS_STORAGE_BUCKET_NAME }}',
+   aws_url: 'https://s3-eu-west-1.amazonaws.com',
+   aws_path: 'uploaded_video/'
+};
+
+var User = {
+  'username': '{{ request.user.username }}',
+  'initials': '{{ request.user.get_initials }}',
+  'email': '{{ request.user.email }}'
+}
+
+/**
+* Setup resource slugs
+**/
+
+ProjectPlaylistFeedResource.params.project_slug = Project.slug;
+
+$(document).ready(function( ) {
+
+  $("a#menu-toggle").on('click', function ( e ) {
+      console.log('fds')
+      e.preventDefault();
+      $(".sidebar_wrapper").toggleClass("toggled");
+  });
+
+  //$('div.draggable > list-group-item').draggable();
+
+});
+</script>
+
+{% compressed_js 'project_detail' %}
+
+
+{% endblock js %}

@@ -18,8 +18,6 @@ class Stream(models.Model):
     name = models.CharField(max_length=128)
     slug = models.SlugField(max_length=128, blank=True, null=True)
 
-    auth_provider = models.ForeignKey('default.UserSocialAuth', blank=True, null=True)  # need to make a PR with pyhton-social-auth to fix their app name
-
     data_sources = models.ManyToManyField('data_source.DataSource')
 
     data = JSONField(default={})

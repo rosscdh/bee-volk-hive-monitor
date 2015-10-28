@@ -19,7 +19,7 @@ class DataSource(models.Model):
     slug = models.SlugField(max_length=128, blank=True, null=True)
     url = models.URLField(blank=True, null=True)
 
-    auth_provider = models.ForeignKey('default.UserSocialAuth')  # user is associated through this
+    auth_provider = models.ForeignKey('default.UserSocialAuth', blank=True, null=True)  # need to make a PR with python-social-auth to fix their app name
 
     data = JSONField(default={})
 

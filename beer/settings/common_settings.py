@@ -33,14 +33,17 @@ DJANGO_APPS = (
 PROJECT_APPS = (
     'beer.apps.api',
 
+    'beer.apps.me',
+    'beer.apps.role_permission',
+
     'beer.apps.monitor',  # depreciated
 
     'beer.apps.stream',
     'beer.apps.data_source',
 
-    'beer.apps.phearjs',
-    'beer.apps.me',
-    'beer.apps.role_permission',
+    'beer.apps.box',
+    'beer.apps.client',
+    'beer.apps.project',
 )
 
 HELPER_APPS = (
@@ -188,7 +191,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_MODEL_SERIALIZER_CLASS':
-        'rest_framework.serializers.HyperlinkedModelSerializer',
+        'rest_framework.serializers.ModelSerializer',
 
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -233,3 +236,8 @@ AUTHENTICATION_BACKENDS = (
     'social.backends.yahoo.YahooOpenId',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+
+PUSHER_APP_ID = 79947
+PUSHER_KEY = 'cf7fc048e21bd39e6f82'
+PUSHER_SECRET = '01d612aade08edc9dfde'
