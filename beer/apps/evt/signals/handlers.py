@@ -36,13 +36,15 @@ def _log_influx_event(sender, signal, action, *args, **kwargs):
     Log a custom event
     """
     json_body = []
-    for action in action.split(','):
+
+    for metric in action.split(','):
         json_body.append({
-            "measurement": action,
+            "measurement": metric,
             "tags": kwargs.get('tags', {}),
             "time": arrow.utcnow().isoformat(),
             "fields": {
-                "value": kwargs.get(action)
+                "value": kwargs.get(metric)
             }
         })
+
     influx_client.write_points(json_body)

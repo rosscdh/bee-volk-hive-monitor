@@ -18,19 +18,26 @@ class EventCreate(generics.ListCreateAPIView):
     queryset = Log.objects.all()
 
     def create(self, request, *args, **kwargs):
-        sender = request.data.get('sender', None)
+        try:
+            # try get form data
+            request_data = request.data.dict().copy()
+        except AttributeError:
+            # is plain json data
+            request_data = request.data.copy()
+
+        sender = request_data.get('sender', None)
+        sensor_action = request_data.get('sensor_action', None)
 
         source = 'github' if request.META.get('X-Github-Event', None) is not None else None
 
-        request.data['source'] = source
+        request_data['source'] = source
 
         if sender:
-            request.data['original_sender'] = sender
+            request_data['original_sender'] = sender
 
-        log_bet_event.send(sender=self, action='created', **request.data)
+        log_bet_event.send(sender=self, action='created', **request_data)
 
-        sensor_action = request.data.get('sensor_action', None)
         if sensor_action is not None:
-            log_influx_event.send(sender=self, action=sensor_action, **request.data)
+            log_influx_event.send(sender=self, action=sensor_action, **request_data)
 
         return Response({'message': 'created'}, status=http_status.HTTP_201_CREATED)
