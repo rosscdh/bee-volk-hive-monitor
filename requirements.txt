@@ -75,3 +75,5 @@ rollbar==0.9.11
 six==1.9.0
 urllib3==1.12
 wsgiref==0.1.2
+GitPython
+termcolor==1.1.0
