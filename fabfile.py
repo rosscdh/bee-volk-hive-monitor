@@ -25,7 +25,7 @@ except:
     env.repo = None
 
 
-env.project = 'record_ly'
+env.project = 'beer'
 env.celery_app_name = 'current'
 
 env.disable_known_hosts = True
@@ -42,7 +42,7 @@ env.environment = 'local'
 env.environment_class = 'development'
 env.key_filename = '~/.ssh/kumukan.pem'
 
-env.virtualenv_path = '~/.virtualenvs/record_ly/'
+env.virtualenv_path = '~/.virtualenvs/beer/'
 env.current_branch = local("git rev-parse --abbrev-ref HEAD", capture=True)
 
 env.newrelic_api_token = None
@@ -69,13 +69,13 @@ def staging():
     env.environment_class = 'staging'
     env.newrelic_app_name = 'Karma-App Staging'
 
-    env.remote_project_path = '/home/ubuntu/apps/record_ly/'
+    env.remote_project_path = '/home/ubuntu/apps/beer/'
     env.deploy_archive_path = '/home/ubuntu/apps/'
-    env.virtualenv_path = '/home/ubuntu/.virtualenvs/record_ly/'
+    env.virtualenv_path = '/home/ubuntu/.virtualenvs/beer/'
     env.remote_dashboard_path = None
 
-    env.start_service = 'supervisorctl start record_ly'
-    env.stop_service = 'supervisorctl stop record_ly'
+    env.start_service = 'supervisorctl start beer'
+    env.stop_service = 'supervisorctl stop beer'
     env.start_worker = None
     env.stop_worker = None
 
@@ -96,11 +96,11 @@ def mkvirtualenv():
 def put_confs():
     #sudo('rm /etc/nginx/sites-enabled/default')
     # nginx
-    put(local_path='./config/environments/{environment}/record_ly-nginx'.format(environment=env.environment_class), remote_path='/etc/nginx/sites-enabled/', use_glob=False, use_sudo=True)
+    put(local_path='./config/environments/{environment}/beer-nginx'.format(environment=env.environment_class), remote_path='/etc/nginx/sites-enabled/', use_glob=False, use_sudo=True)
     # supervisord
-    put(local_path='./config/environments/{environment}/record_ly.conf'.format(environment=env.environment_class), remote_path='/etc/supervisor/conf.d/', use_glob=False, use_sudo=True)
+    put(local_path='./config/environments/{environment}/beer.conf'.format(environment=env.environment_class), remote_path='/etc/supervisor/conf.d/', use_glob=False, use_sudo=True)
     # uwsgi
-    put(local_path='./config/environments/{environment}/record_ly.ini'.format(environment=env.environment_class), remote_path='/etc/uwsgi/apps-enabled/', use_glob=False, use_sudo=True)
+    put(local_path='./config/environments/{environment}/beer.ini'.format(environment=env.environment_class), remote_path='/etc/uwsgi/apps-enabled/', use_glob=False, use_sudo=True)
 
 
 @task
@@ -394,7 +394,7 @@ def set_code_version():
     version_path = '%sversions' % env.remote_project_path
     full_version_path = '%s/%s' % (version_path, env.SHA1_FILENAME)
 
-    cmd = 'echo "CODE_VERSION=\'%s\'" > record_ly/settings/code_version.py' % env.SHA1_FILENAME
+    cmd = 'echo "CODE_VERSION=\'%s\'" > beer/settings/code_version.py' % env.SHA1_FILENAME
 
     with cd(full_version_path):
         if env.environment in ['local']:
@@ -571,13 +571,13 @@ def paths():
     # run('echo "source /usr/local/bin/virtualenvwrapper.sh" >> $HOME/.bash_profile')
     # run('echo "source $HOME/.bash_profile" >> $HOME/.bashrc')
     run('mkdir -p ~/.virtualenvs')
-    run('mkdir -p ~/apps/record_ly/versions/tmp')
-    run('ln -s ~/apps/record_ly/versions/tmp ~/apps/record_ly/current')
+    run('mkdir -p ~/apps/beer/versions/tmp')
+    run('ln -s ~/apps/beer/versions/tmp ~/apps/beer/current')
     # pass
 
 @task
 def upload_db():
-    put('db.sqlite3', '/home/ubuntu/apps/record_ly/')
+    put('db.sqlite3', '/home/ubuntu/apps/beer/')
 #-------
 
 @task

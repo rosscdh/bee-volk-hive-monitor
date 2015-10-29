@@ -255,7 +255,7 @@ INFLUX_DB = {
 }
 
 try:
-    env_path = os.path.join(BASE_DIR, 'config/environments/{DJANGO_ENV}/record_ly/local_settings.py'.format(DJANGO_ENV=DJANGO_ENV))
+    env_path = os.path.join(BASE_DIR, 'config/environments/{DJANGO_ENV}/beer/local_settings.py'.format(DJANGO_ENV=DJANGO_ENV))
     environment_settings = open(env_path)
     exec(environment_settings)
 except Exception as e:
