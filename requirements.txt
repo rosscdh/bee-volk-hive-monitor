@@ -11,7 +11,6 @@ django-activity-stream==0.5.1
 django-allauth==0.20.0
 django-annoying==0.8.2
 django-bower==5.0.4
-django-celery==3.1.16
 django-cors-headers==1.1.0
 django-crispy-forms==1.4.0
 django-environ==0.3.0
