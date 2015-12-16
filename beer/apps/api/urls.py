@@ -6,11 +6,6 @@ from rest_framework import routers
 
 from beer.apps.box.api.views import (BoxRegistrationEndpoint,
                                      BoxPusherPresenceAuthEndpoint,)
-from beer.apps.me.api.views import (MeView,
-                                    ChangePasswordView,
-                                    RegisterView,
-                                    VerifyUserView,
-                                    ForgotPasswordView)
 
 router = routers.SimpleRouter(trailing_slash=False)
 

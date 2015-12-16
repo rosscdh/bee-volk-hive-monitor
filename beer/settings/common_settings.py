@@ -7,6 +7,8 @@ import os
 
 DJANGO_ENV = os.getenv('DJANGO_ENV', os.getenv('RAILS_ENV', 'development'))
 
+SITE_ID = 1
+
 #
 # Custom url used in the api to prefix reverses as we dont have access to request object
 #
@@ -39,7 +41,7 @@ PROJECT_APPS = (
 
     'beer.apps.api',
 
-    'beer.apps.me',
+    'beer.apps.payment_plans',
     'beer.apps.role_permission',
 
     'beer.apps.box',
@@ -75,7 +77,7 @@ HELPER_APPS = (
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + HELPER_APPS
 
-LOGIN_URL = ''
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -217,6 +219,11 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# All Auth /rest-auth config
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 PUSHER_APP_ID = 79947
 PUSHER_KEY = 'cf7fc048e21bd39e6f82'

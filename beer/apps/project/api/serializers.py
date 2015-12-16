@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 
-from beer.apps.me.api.serializers import CollaboratorSerializer
+from beer.apps.payment_plans.api.serializers import CollaboratorSerializer
 from beer.apps.feed.api.serializers import FeedItemSerializer
 
 from ..models import Project

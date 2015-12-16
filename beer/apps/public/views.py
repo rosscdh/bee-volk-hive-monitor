@@ -14,7 +14,7 @@ from .forms import SignUpForm, SignInForm, VerifyTwoFactorForm
 
 from beer.apps.workspace.forms import InviteKeyForm
 from beer.apps.workspace.models import InviteKey
-from beer.apps.me.mailers import ValidateEmailMailer
+from beer.apps.payment_plans.mailers import ValidateEmailMailer
 
 from beer.core.services.analytics import AtticusFinch
 

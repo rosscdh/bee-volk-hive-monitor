@@ -30,7 +30,7 @@ django-appconf==1.0.1
 django-bower==5.0.4
 django-celery==3.1.16
 django-cors-headers==1.1.0
-django-crispy-forms==1.4.0
+django-crispy-forms==1.5.2
 django-environ==0.3.0
 django-extensions==1.6.1
 django-filter==0.10.0
@@ -39,7 +39,6 @@ django-hstore==1.4
 django-inmemorystorage==0.1.1
 django-jsonfield==0.9.13
 -e git+https://github.com/agiliq/Django-parsley.git@c11296dafcea475a6a6ec85b016b7a59b56c2470#egg=django_parsley-master
-django-password-reset==0.8.1
 django-pipeline==1.5.1
 django-rest-auth==0.6.0
 django-rest-swagger==0.3.2
