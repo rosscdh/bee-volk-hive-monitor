@@ -24,7 +24,7 @@ from parsley.decorators import parsleyfy
 from payments.forms import PlanForm
 from payments.models import Customer
 
-from beer.apps.default.fields import HTMLField
+from beer.apps.public.fields import HTMLField
 #from beer.core.services.analytics import AtticusFinch
 from beer.mixins import ModalForm
 

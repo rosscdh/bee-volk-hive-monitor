@@ -13,9 +13,11 @@ register = template.Library()
 import logging
 logger = logging.getLogger('django.request')
 
+
 def _DOMAIN_WITH_END_SLASH():
     _CURRENT_SITE = CURRENT_SITE()
     return _CURRENT_SITE.domain if _CURRENT_SITE.domain[-1] == '/' else '%s/' % _CURRENT_SITE.domain
+
 
 @register.simple_tag
 def admin_url_for(instance):

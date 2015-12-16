@@ -18,16 +18,11 @@ class UserProfile(EmailIsValidatedMixin, models.Model):
     Base User Profile, where we store all the interesting information about
     users
     """
-    CUSTOMER = 'customer'
-    LAWYER = 'lawyer'
-
-    has_notifications = models.BooleanField(default=False)
-
     user = models.OneToOneField('auth.User',
                                 unique=True,
                                 related_name='profile')
 
-    data = JSONField(default={"user_class": "lawyer"})
+    data = JSONField(default={})
 
     @classmethod
     def create(cls, **kwargs):
@@ -45,23 +40,6 @@ class UserProfile(EmailIsValidatedMixin, models.Model):
 
     def __unicode__(self):
         return '%s <%s>' % (self.user.get_full_name(), self.user.email)
-
-    @property
-    def user_class(self):
-        return self.data.get('user_class', None)
-
-    @user_class.setter
-    def user_class(self, value):
-        if value in [self.CUSTOMER, self.LAWYER]:
-            self.data['user_class'] = value
-
-    @property
-    def is_lawyer(self):
-        return self.user_class == self.LAWYER
-
-    @property
-    def is_customer(self):
-        return self.user_class == self.CUSTOMER
 
     @property
     def account_type(self):
@@ -89,29 +67,8 @@ class UserProfile(EmailIsValidatedMixin, models.Model):
             pass
 
     @property
-    def type(self):
-        return 'Attorney' if self.is_lawyer else 'Client'
-
-    @property
-    def open_requests(self):
-        return self.data.get('open_requests', 0)
-
-    @open_requests.setter
-    def open_requests(self, value):
-        if type(value) in [int]:
-            self.data['open_requests'] = value
-
-    def get_open_requests_count(self):
-        from beer.core.item.models import Item
-        return Item.objects.my_requests(self.user).get('count', 0)
-
-    @property
     def verified(self):
         return self.data.get('validated_email', False)
-
-    # @property
-    # def integrations(self):
-    #     return [i.get('provider') for i in self.user.social_auth.filter(provider__in=['dropbox-oauth2', 'box']).values('provider')]
 
 
 def _get_or_create_user_profile(user):

@@ -20,9 +20,9 @@ from dj_authy.views import HoldingPageView, ProfileView
 from payments.models import Charge, Customer
 
 from beer.apps.me.signals import send_welcome_email
-from beer.apps.default.models import UserProfile
+from beer.apps.public.models import UserProfile
 from beer.mixins import AjaxFormView, AjaxModelFormView, ModalView
-#from beer.apps.default.views import LogOutMixin
+#from beer.apps.public.views import LogOutMixin
 
 from .mailers import ValidateEmailMailer
 

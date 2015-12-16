@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
+from django.contrib.sites.shortcuts import get_current_site
 #from storages.backends.s3boto import S3BotoStorage
 from django.core.files.storage import FileSystemStorage
-
 from collections import namedtuple, OrderedDict
 
 import os
@@ -147,3 +147,7 @@ def _managed_S3BotoStorage():
     else:
         return FileSystemStorage()
         #return S3BotoStorage()
+
+
+def CURRENT_SITE():
+    return get_current_site()

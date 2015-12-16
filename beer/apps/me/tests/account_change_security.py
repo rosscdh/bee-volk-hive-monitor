@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.messages import get_messages
 
-from beer.apps.default.templatetags.toolkit_tags import ABSOLUTE_BASE_URL
+from beer.apps.public.templatetags.toolkit_tags import ABSOLUTE_BASE_URL
 from beer.casper.workflow_case import BaseScenarios
 
 from ..forms import (ChangePasswordForm, AccountSettingsForm)

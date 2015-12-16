@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from beer.mailers import BaseMailerService
-from beer.apps.default.templatetags.toolkit_tags import ABSOLUTE_BASE_URL
+from beer.apps.public.templatetags.toolkit_tags import ABSOLUTE_BASE_URL
 
 
 class WelcomeEmail(BaseMailerService):

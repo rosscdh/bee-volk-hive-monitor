@@ -55,11 +55,16 @@ HELPER_APPS = (
     'pipeline',
     'corsheaders',
     'django_extensions',
+
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
 
-    'social.apps.django_app.default',
+    'rest_auth',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
     'pinax.eventlog',
 
     'geoposition',
@@ -208,12 +213,7 @@ PIPELINE_JS = {
 
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.open_id.OpenIdAuth',
-    'social.backends.google.GoogleOpenId',
-    'social.backends.google.GoogleOAuth2',
-    'social.backends.google.GoogleOAuth',
-    'social.backends.twitter.TwitterOAuth',
-    'social.backends.yahoo.YahooOpenId',
+    'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 

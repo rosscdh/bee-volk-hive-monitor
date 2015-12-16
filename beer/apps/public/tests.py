@@ -6,7 +6,7 @@ from django.test import TestCase
 
 from model_mommy import mommy
 
-from beer.apps.default import _get_unique_username
+from beer.apps.public import _get_unique_username
 from beer.apps.matter.views import MatterListView, MatterDetailView
 from beer.casper.workflow_case import BaseProjectCaseMixin
 
