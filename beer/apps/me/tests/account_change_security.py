@@ -4,11 +4,10 @@ from django.core import signing
 from django.conf import settings
 from django.test import TestCase
 from django.core.urlresolvers import reverse
-from django.contrib.auth import get_user_model
 from django.contrib.messages import get_messages
 
-from beer.tests.workflow_case import BaseScenarios
-from beer.templatetags.tags import ABSOLUTE_BASE_URL
+from beer.apps.default.templatetags.toolkit_tags import ABSOLUTE_BASE_URL
+from beer.casper.workflow_case import BaseScenarios
 
 from ..forms import (ChangePasswordForm, AccountSettingsForm)
 
@@ -19,18 +18,18 @@ def _get_action_url(url_name, user):
     # and tometimes out tests woudl fail because of the time diff involved in
     # the testing process; so simply generate teh url but remove the token so
     # at least we guarantee that the url is in the body
-    return ABSOLUTE_BASE_URL(reverse(url_name, kwargs={'token': token}))#.replace(token, '')
+    return ABSOLUTE_BASE_URL(reverse(url_name, kwargs={'token': token})).replace(token, '')
 
 
 class AccountPasswordChangeTest(BaseScenarios, TestCase):
     subject = ChangePasswordForm
 
     def setUp(self):
-        super(AccountPasswordChangeTest, self).setUp()
+        self.basic_workspace()
         self.url = reverse('me:change-password')
 
     def test_password_change_requires_validation(self):
-        self.login(user=self.user)
+        self.client.login(username=self.user.username, password=self.password)
 
         expected_original_password = self.user.password
 
@@ -39,11 +38,10 @@ class AccountPasswordChangeTest(BaseScenarios, TestCase):
 
         form = resp.context_data.get('form')
         self.assertEqual(form.__class__.__name__, 'ChangePasswordForm')
-        self.assertEqual(form.rendered_fields, set([u'old_password', u'new_password2', u'new_password1']))
+        self.assertEqual(form.rendered_fields, set([u'new_password2', u'new_password1']))
 
         form_data = form.initial
         form_data.update({
-            'old_password': 'password',
             'new_password1': 'bananas',
             'new_password2': 'bananas',
             'csrfmiddlewaretoken': unicode(resp.context['csrf_token']),
@@ -65,15 +63,15 @@ class AccountPasswordChangeTest(BaseScenarios, TestCase):
         self.assertEqual(expected_original_password, self.user.password)
 
         outbox = mail.outbox
-        self.assertEqual(len(outbox), 2)
+        self.assertEqual(len(outbox), 1)
 
-        email = outbox[1]
+        email = outbox[0]
         self.assertEqual(email.subject, u'Please confirm your change of password')
         #self.assertTrue(expected_action_url in unicode(email.body))
 
         # test that the password gets reset when we visit this url
         resp = self.client.get(expected_action_url, follow=True)
-        self.assertEqual(resp.redirect_chain, [('http://testserver/', 301), ('http://testserver/accounts/login/?next=/', 302)])
+        self.assertEqual(resp.redirect_chain, [('http://testserver/', 301)])
 
         self.user = self.user.__class__.objects.get(pk=self.user.pk)  # refresh
 
@@ -92,11 +90,11 @@ class AccountEmailChangeTest(BaseScenarios, TestCase):
     subject = AccountSettingsForm
 
     def setUp(self):
-        super(AccountEmailChangeTest, self).setUp()
+        self.basic_workspace()
         self.url = reverse('me:settings')
 
     def test_email_change_requires_validation(self):
-        self.login(user=self.user)
+        self.client.login(username=self.user.username, password=self.password)
 
         expected_original_email = self.user.email
 
@@ -109,7 +107,7 @@ class AccountEmailChangeTest(BaseScenarios, TestCase):
 
         form_data = form.initial
         form_data.update({
-            'email': 'change_of_email_test@beer.com',
+            'email': 'change_of_email_test@lawpal.com',
             'csrfmiddlewaretoken': unicode(resp.context['csrf_token']),
         })
 
@@ -128,9 +126,9 @@ class AccountEmailChangeTest(BaseScenarios, TestCase):
         self.assertEqual(expected_original_email, self.user.email)
 
         outbox = mail.outbox
-        self.assertEqual(len(outbox), 2)  # including the welcome email
+        self.assertEqual(len(outbox), 1)
 
-        email = outbox[1]
+        email = outbox[0]
         self.assertEqual(email.subject, u'Please confirm your change of email address')
         # print email.body
         # print expected_action_url
@@ -139,7 +137,7 @@ class AccountEmailChangeTest(BaseScenarios, TestCase):
         # test that the password gets reset when we visit this url
         resp = self.client.get(expected_action_url, follow=True)
         # because the user can remain logged in they are redirected to / and then to /matters
-        self.assertEqual(resp.redirect_chain, [('http://testserver/', 301), ('http://testserver/accounts/login/?next=/', 302)])
+        self.assertEqual(resp.redirect_chain, [('http://testserver/', 301)])
 
         self.user = self.user.__class__.objects.get(pk=self.user.pk)  # refresh
 
@@ -153,30 +151,19 @@ class AccountEmailChangeTest(BaseScenarios, TestCase):
         self.assertTrue('Congratulations. Your email has been changed. Please login with your new email.' in resp.content)
 
     def test_email_cant_change_to_existing_user(self):
-        """
-        Not necessary as the email column is forced unqiue through the custom user model
-        """
-        pass
-        # User = get_user_model()
-        # self.login(user=self.user)
+        self.client.login(username=self.user.username, password=self.password)
 
-        # resp = self.client.get(self.url)
-        # form = resp.context_data.get('form')
+        resp = self.client.get(self.url)
+        form = resp.context_data.get('form')
 
-        # another_user = User(username='another-test-customer',
-        #                     first_name='Customër',
-        #                     last_name='Tëst',
-        #                     email='test+customer@beer.com')
-        # form_data = form.initial
-        # form_data.update({
-        #     'username': another_user.username,
-        #     'email': another_user.email,  # Try to use another users email address
-        #     'csrfmiddlewaretoken': unicode(resp.context['csrf_token']),
-        # })
+        form_data = form.initial
+        form_data.update({
+            'email': self.lawyer.email,  # Try to use another users email address
+            'csrfmiddlewaretoken': unicode(resp.context['csrf_token']),
+        })
 
-        # resp = self.client.post(self.url, form_data, follow=True)
-        # # shoudl show form again with error message
-        # self.assertEqual(resp.status_code, 200)
-        # self.assertItemsEqual(resp.template_name, ['me/settings/account.html', 'auth.User_form.html'])
-
-        # self.assertTrue('An account with that email already exists.' in resp.content)
+        resp = self.client.post(self.url, form_data, follow=True)
+        # shoudl show form again with error message
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.template_name, ['user/settings/account.html'])
+        self.assertTrue('An account with that email already exists.' in resp.content)

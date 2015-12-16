@@ -4,31 +4,22 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from beer.mailers import BaseMailerService
-from beer.templatetags.tags import ABSOLUTE_BASE_URL
+from beer.apps.default.templatetags.toolkit_tags import ABSOLUTE_BASE_URL
 
 
 class WelcomeEmail(BaseMailerService):
     """
     m = WelcomeEmail(
-            recipients=(('Bob', 'bob@beer.com')))
+            recipients=(('Alex', 'alex@lawpal.com')))
     m.process()
     """
     email_template = 'welcome_email'
 
 
-class ForgotPasswordEmail(BaseMailerService):
-    """
-    m = ForgotPasswordEmail(
-            recipients=(('Bob', 'bob@beer.com')))
-    m.process()
-    """
-    email_template = 'recovery_email'
-
-
 class ValidateEmailMailer(BaseMailerService):
     """
     m = ValidateEmailMailer(
-            recipients=(('Bob', 'bob@beer.com'),),)
+            recipients=(('Alex', 'alex@lawpal.com'),),)
     m.process(user=user_send_validation_email_to)
     """
     email_template = 'validate_email'
@@ -48,7 +39,7 @@ class ValidateEmailMailer(BaseMailerService):
 class ValidateEmailChangeMailer(BaseMailerService):
     """
     m = ValidateEmailChangeMailer(
-            recipients=(('Bob', 'bob@beer.com'),),)
+            recipients=(('Alex', 'alex@lawpal.com'),),)
     m.process(user=user_send_validation_email_to)
     """
     email_template = 'validate_email_change'
@@ -68,7 +59,7 @@ class ValidateEmailChangeMailer(BaseMailerService):
 class ValidatePasswordChangeMailer(BaseMailerService):
     """
     m = ValidatePasswordChangeMailer(
-            recipients=(('Bob', 'bob@beer.com'),),)
+            recipients=(('Alex', 'alex@lawpal.com'),),)
     m.process(user=user_send_validation_email_to)
     """
     email_template = 'validate_password_change'

@@ -35,6 +35,8 @@ DJANGO_APPS = (
 )
 
 PROJECT_APPS = (
+    'beer.apps.public',
+
     'beer.apps.api',
 
     'beer.apps.me',
@@ -67,6 +69,8 @@ HELPER_APPS = (
 )
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + HELPER_APPS
+
+LOGIN_URL = ''
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

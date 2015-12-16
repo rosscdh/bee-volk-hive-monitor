@@ -23,18 +23,6 @@ router = routers.SimpleRouter(trailing_slash=False)
 # Standard URLS
 #
 urlpatterns = patterns('',
-                       # User
-                       url(r'^auth/jwt/refresh/', 'rest_framework_jwt.views.refresh_jwt_token'),
-
-                       # Register
-                       url(r'^auth/register/$', RegisterView.as_view(), name='register'),
-                       url(r'^auth/verify/$', VerifyUserView.as_view(), name='verify'),
-                       url(r'^auth/forgot-password/$', ForgotPasswordView.as_view(), name='forgot_password'),
-
-                       # Current user
-                       url(r'^me/change-password', ChangePasswordView.as_view(), name='change-password'),
-                       url(r'^me/$', MeView.as_view(), name='me'),
-
                        # Hives
 
                        # Sensors
