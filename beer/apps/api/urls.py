@@ -4,11 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import routers
 
-from beer.apps.stream.api.views import StreamViewSet
-from beer.apps.data_source.api.views import DataSourceViewSet
 from beer.apps.box.api.views import (BoxRegistrationEndpoint,
-                                     BoxPusherPresenceAuthEndpoint,
-                                     BoxViewSet,)
+                                     BoxPusherPresenceAuthEndpoint,)
 from beer.apps.me.api.views import (MeView,
                                     ChangePasswordView,
                                     RegisterView,
@@ -17,15 +14,14 @@ from beer.apps.me.api.views import (MeView,
 
 router = routers.SimpleRouter(trailing_slash=False)
 
-"""
-Generic ViewSets
-"""
-router.register(r'box', BoxViewSet)
-
-router.register(r'data-streams', StreamViewSet, base_name='data-streams')
-router.register(r'data-sources', DataSourceViewSet, base_name='data-sources')
+#
+# Generic ViewSets
+#
 
 
+#
+# Standard URLS
+#
 urlpatterns = patterns('',
                        # User
                        url(r'^auth/jwt/refresh/', 'rest_framework_jwt.views.refresh_jwt_token'),
@@ -39,7 +35,11 @@ urlpatterns = patterns('',
                        url(r'^me/change-password', ChangePasswordView.as_view(), name='change-password'),
                        url(r'^me/$', MeView.as_view(), name='me'),
 
-                       # Boxes
+                       # Hives
+
+                       # Sensors
+
+                       # Boxes - Gen 1
                        url(r'^box/register/$', csrf_exempt(BoxRegistrationEndpoint.as_view()), name='box_registration'),
                        url(r'^box/auth/pusher/$', csrf_exempt(BoxPusherPresenceAuthEndpoint.as_view()), name='pusher_auth'),
 

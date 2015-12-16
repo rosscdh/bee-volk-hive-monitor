@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from . import BASE_DIR
 from ..local_settings import PROJECT_ENVIRONMENT
 from ..local_settings import ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN
@@ -29,6 +30,7 @@ DJANGO_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
 )
 
@@ -38,12 +40,11 @@ PROJECT_APPS = (
     'beer.apps.me',
     'beer.apps.role_permission',
 
-    'beer.apps.stream',
-    'beer.apps.data_source',
-
+    'beer.apps.box',
     'beer.apps.evt',
 
-    'beer.apps.box',
+    'beer.apps.hive',
+
     'beer.apps.client',
     'beer.apps.project',
 )
@@ -59,9 +60,9 @@ HELPER_APPS = (
     'social.apps.django_app.default',
     'pinax.eventlog',
 
-    'djcelery',
-    'actstream',
-    'djangobower',
+    'geoposition',
+
+#    'actstream',
     'easy_thumbnails',
 )
 
@@ -144,34 +145,6 @@ ROLLBAR = {
     'branch': 'master',
     'root': BASE_DIR,
 }
-
-BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, '../', 'bower_components')
-BOWER_PATH = '/usr/local/bin/bower'
-BOWER_INSTALLED_APPS = (
-    'angular-animate#1.3.8',
-    'angular-cookies#1.3.4',
-    'angular-touch#1.3.4',
-    'angular-sanitize#1.3.4',
-    'jquery#2.1.1',
-    'angular-resource#1.3.4',
-    'angular-ui-router#0.2.13',
-    'bootstrap-sass-official#3.3.1',
-    'angular-bootstrap#0.12.0',
-    'modernizr#2.8.3',
-    'angular-moment#0.9.0',
-    'moment#2.9.0',
-    'angular-local-storage#0.1.5',
-    'angular-fontawesome#0.3.2',
-    'angular-loading-bar#0.7.1',
-    'angular-messages#1.4.0',
-    'angular-validation-match#1.3.0',
-    'angular-formly',
-    'ng-simplePagination#1.0.3',
-    'allmighty-autocomplete#*',
-    'jquery-ui#1.11.4',
-    'animate.css#3.3.0',
-    'bootstrap-hover-dropdown#2.1.3'
-)
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = ('*',)

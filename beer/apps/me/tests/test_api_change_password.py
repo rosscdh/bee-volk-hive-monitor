@@ -26,7 +26,7 @@ class ChangePasswordApiTest(BaseObjectsTestCase):
             'new_password': 'abc',
             'confirm_new_password': 'abc'
         }, format='json')
-        self.assertApiResponseOk(resp, resp.data)
+        self.assertEqual(resp.status_code, 200)
 
         u = User.objects.get(pk=self.user.pk)
         self.assertTrue(check_password('abc', u.password))

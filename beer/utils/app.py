@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
-from django.contrib.sites.models import Site
 #from storages.backends.s3boto import S3BotoStorage
 from django.core.files.storage import FileSystemStorage
 
@@ -119,10 +118,6 @@ def get_namedtuple_choices(name, choices_tuple):
             return False
 
     return Choices._make([val for val, name, desc in choices_tuple])
-
-
-def CURRENT_SITE():
-    return Site.objects.get(pk=settings.SITE_ID)
 
 
 class OverwriteStorage(FileSystemStorage):

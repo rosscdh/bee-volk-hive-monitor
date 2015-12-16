@@ -71,6 +71,7 @@ There is no signup form at the moment
 #         self.assertEqual(email.subject, 'Please confirm your email address')
 #         self.assertTrue(re.search(r'/me/email_confirmed/(?P<token>.*)/', email.body))
 
+
 class CustomerSignInTest(BaseScenarios):
     """
     Specifically test the crazy uppercase lowercase domain
@@ -88,7 +89,6 @@ class CustomerSignInTest(BaseScenarios):
     def test_signin(self):
         url = settings.LOGIN_URL
         resp = self.client.get(url)
-
         self.assertEqual(resp.context_data.get('form').fields.keys(), ['username', 'password'])
 
         form_data = resp.context_data.get('form').initial
