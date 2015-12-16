@@ -6,6 +6,7 @@ from rest_framework import routers
 
 from beer.apps.box.api.views import (BoxRegistrationEndpoint,
                                      BoxPusherPresenceAuthEndpoint,)
+from beer.apps.hive.api.views import HiveViewSet
 
 router = routers.SimpleRouter(trailing_slash=False)
 
@@ -13,6 +14,7 @@ router = routers.SimpleRouter(trailing_slash=False)
 # Generic ViewSets
 #
 
+router.register(r'hives', HiveViewSet)
 
 #
 # Standard URLS
