@@ -37,12 +37,11 @@ django-filter==0.10.0
 django-geoposition==0.2.2
 django-hstore==1.4
 django-inmemorystorage==0.1.1
-django-jsonfield==0.9.13
+django-jsonfield==0.9.15
 -e git+https://github.com/agiliq/Django-parsley.git@c11296dafcea475a6a6ec85b016b7a59b56c2470#egg=django_parsley-master
 django-pipeline==1.5.1
 django-rest-auth==0.6.0
 django-rest-swagger==0.3.2
-django-stripe-payments==2.0.0
 -e git+https://github.com/rosscdh/django-templated-email@fd2eabd4afa0da520d5e8ffb3dc07a397a2cfbd3#egg=django_templated_email-origin/attachments
 django-uuidfield==0.5.0
 djangorestframework==3.3.2
@@ -60,6 +59,7 @@ icalendar==3.9.0
 idna==2.0
 influxdb==2.9.2
 ipaddress==1.0.14
+jsonfield==1.0.3
 kombu==3.0.26
 livereload==2.4.0
 lxml==3.4.4
@@ -71,6 +71,7 @@ ndg-httpsclient==0.4.0
 oauthlib==1.0.3
 paramiko==1.15.3
 -e git+https://github.com/rosscdh/pinax-eventlog.git@d1018d626db926dee6593bc7f51dd653659367b1#egg=pinax_eventlog-origin/feature/dateoverride
+pinax-stripe==3.0.0
 psycopg2==2.6.1
 pusher==1.2.3
 pyOpenSSL==0.15.1
@@ -81,7 +82,7 @@ pyquery==1.2.9
 python-dateutil==2.4.2
 python-openid==2.2.5
 python-social-auth==0.2.11
-pytz==2015.4
+pytz==2015.7
 requests==2.9.0
 requests-mock==0.6.0
 requests-oauthlib==0.6.0

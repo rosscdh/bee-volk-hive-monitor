@@ -7,9 +7,9 @@ from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import FormView, ListView, UpdateView, TemplateView
 
-from dj_authy.views import HoldingPageView, ProfileView
+# from dj_authy.views import HoldingPageView, ProfileView
 
-from payments.models import Charge, Customer
+from pinax.stripe.models import Charge, Customer
 
 from beer.mixins import AjaxFormView, AjaxModelFormView, ModalView
 
@@ -95,57 +95,57 @@ class PlanChangeView(ModalView, AjaxFormView, FormView):
         return reverse('me:welcome')
 
 
-class TwoFactorDisableView(AjaxFormView, TemplateView):
-    template_name = 'user/settings/two_factor_confirm_disable.html'
+# class TwoFactorDisableView(AjaxFormView, TemplateView):
+#     template_name = 'user/settings/two_factor_confirm_disable.html'
 
-    def disable(self, request, *args, **kwargs):
-        profile = self.request.user.profile
-        profile.data['two_factor_enabled'] = False
-        profile.save(update_fields=['data'])
+#     def disable(self, request, *args, **kwargs):
+#         profile = self.request.user.profile
+#         profile.data['two_factor_enabled'] = False
+#         profile.save(update_fields=['data'])
 
-        # messages.success(self.request, 'You have successfully disabled two-step verification for your LawPal account.')
+#         # messages.success(self.request, 'You have successfully disabled two-step verification for your LawPal account.')
 
-        return HttpResponseRedirect(self.get_success_url())
+#         return HttpResponseRedirect(self.get_success_url())
 
-    def post(self, request, *args, **kwargs):
-        return self.disable(request, *args, **kwargs)
+#     def post(self, request, *args, **kwargs):
+#         return self.disable(request, *args, **kwargs)
 
-    def get_success_url(self):
-        return reverse('me:settings')
-
-
-class TwoFactorEnableView(AjaxModelFormView, ProfileView):
-    template_name = 'user/settings/two_factor_enable.html'
-
-    def get_success_url(self):
-        return reverse('me:two-factor-verify')
-
-    def form_valid(self, form):
-        super(TwoFactorEnableView, self).form_valid(form)
-
-        data = {
-            'modal': True,
-            'target': '#verify-two-factor',
-            'url': self.get_success_url()
-        }
-
-        return self.render_to_json_response(data)
+#     def get_success_url(self):
+#         return reverse('me:settings')
 
 
-class TwoFactorVerifyView(AjaxFormView, HoldingPageView):
-    template_name = 'user/settings/two_factor_verify.html'
+# class TwoFactorEnableView(AjaxModelFormView, ProfileView):
+#     template_name = 'user/settings/two_factor_enable.html'
 
-    def form_valid(self, form):
-        profile = self.request.user.profile
-        profile.data['two_factor_enabled'] = True
-        profile.save(update_fields=['data'])
+#     def get_success_url(self):
+#         return reverse('me:two-factor-verify')
 
-        # messages.success(self.request, 'You have successfully enabled two-step verification for your LawPal account.')
+#     def form_valid(self, form):
+#         super(TwoFactorEnableView, self).form_valid(form)
 
-        return super(TwoFactorVerifyView, self).form_valid(form)
+#         data = {
+#             'modal': True,
+#             'target': '#verify-two-factor',
+#             'url': self.get_success_url()
+#         }
 
-    def get_success_url(self):
-        return reverse('me:settings')
+#         return self.render_to_json_response(data)
+
+
+# class TwoFactorVerifyView(AjaxFormView, HoldingPageView):
+#     template_name = 'user/settings/two_factor_verify.html'
+
+#     def form_valid(self, form):
+#         profile = self.request.user.profile
+#         profile.data['two_factor_enabled'] = True
+#         profile.save(update_fields=['data'])
+
+#         # messages.success(self.request, 'You have successfully enabled two-step verification for your LawPal account.')
+
+#         return super(TwoFactorVerifyView, self).form_valid(form)
+
+#     def get_success_url(self):
+#         return reverse('me:settings')
 
 
 class AccountCancelView(ModalView, AjaxFormView, FormView):

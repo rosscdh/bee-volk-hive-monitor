@@ -3,7 +3,7 @@ import datetime
 from django.dispatch import receiver
 from django.utils.dateformat import format
 
-from payments.signals import WEBHOOK_SIGNALS
+from pinax.stripe.signals import WEBHOOK_SIGNALS
 
 # from beer.core.services.analytics import AtticusFinch
 

@@ -71,6 +71,8 @@ HELPER_APPS = (
 
     'geoposition',
 
+    'pinax.stripe',
+
 #    'actstream',
     'easy_thumbnails',
 )
@@ -232,11 +234,14 @@ PUSHER_SECRET = '01d612aade08edc9dfde'
 
 INFLUX_DB = {
     'host': os.getenv('INFLUX_DB_HOST', '192.168.99.100'),
-    'port': os.getenv('INFLUX_DB_PORT', '32768'),
+    'port': os.getenv('INFLUX_DB_PORT', '32770'),
     'username': os.getenv('INFLUX_DB_USERNAME', 'root'),
     'password': os.getenv('INFLUX_DB_PASSWORD', 'root'),
     'database': os.getenv('INFLUX_DB_DATABASE', 'beekeep'),
 }
+
+PINAX_STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "your test public key")
+PINAX_STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "your test secret key")
 
 try:
     env_path = os.path.join(BASE_DIR, 'config/environments/{DJANGO_ENV}/beer/local_settings.py'.format(DJANGO_ENV=DJANGO_ENV))
