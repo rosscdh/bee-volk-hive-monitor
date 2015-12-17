@@ -8,6 +8,7 @@ local_settings.py
 templates/dashboard/*
 /static/*
 /media/*
+*.pyc
 
 # ignore the locally generated dash as its uploaded seperately
 /scantrust/apps/dash/static/dashboard/*

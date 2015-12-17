@@ -9,6 +9,8 @@ urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
 
                        # User Auth
+                       url(r'^auth/token/', 'rest_framework_jwt.views.obtain_jwt_token'),
+                       url(r'^auth/token/refresh/', 'rest_framework_jwt.views.refresh_jwt_token'),
                        url(r'^auth/', include('rest_auth.urls')),
                        url(r'^auth/registration/', include('rest_auth.registration.urls')),
                        url(r'^accounts/', include('allauth.urls')),

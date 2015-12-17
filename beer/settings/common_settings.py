@@ -73,6 +73,8 @@ HELPER_APPS = (
 
     'pinax.stripe',
 
+    'rulez',
+
 #    'actstream',
     'easy_thumbnails',
 )
@@ -174,10 +176,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
+        'toolkit.apps.api.permissions.ApiObjectPermission',
     ),
     'DEFAULT_MODEL_SERIALIZER_CLASS':
         'rest_framework.serializers.ModelSerializer',
@@ -192,6 +195,11 @@ REST_FRAMEWORK = {
     'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 5,
     'PAGINATE_BY': 30
 }
+
+JWT_AUTH = {
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+}
+
 
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.cssmin.CSSMinCompressor'
 PIPELINE_CSSMIN_BINARY = 'cssmin'
@@ -219,6 +227,7 @@ PIPELINE_JS = {
 AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
+    'rulez.backends.ObjectPermissionBackend',
 )
 
 # All Auth /rest-auth config
