@@ -8,7 +8,7 @@ from beer.apps.box.api.views import (BoxRegistrationEndpoint,
                                      BoxPusherPresenceAuthEndpoint,)
 from beer.apps.hive.api.views import HiveViewSet
 
-router = routers.SimpleRouter(trailing_slash=False)
+router = routers.SimpleRouter(trailing_slash=True)
 
 #
 # Generic ViewSets

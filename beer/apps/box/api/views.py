@@ -6,6 +6,8 @@ from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework.response import Response
 
+from rulez import registry as rulez_registry
+
 from beer.apps.project.models import Project
 from beer.pusher_services import PusherAuthService
 
@@ -22,6 +24,20 @@ class BoxViewSet(viewsets.ModelViewSet):
     queryset = Box.objects.all()
     serializer_class = BoxSerializer
     lookup_field = 'slug'
+
+    def can_read(self, user):
+        return user == self.get_object().owner or user.is_staff
+
+    def can_edit(self, user):
+        return user == self.get_object().owner or user.is_staff
+
+    def can_delete(self, user):
+        return user == self.get_object().owner or user.is_staff
+
+
+rulez_registry.register("can_read", BoxViewSet)
+rulez_registry.register("can_edit", BoxViewSet)
+rulez_registry.register("can_delete", BoxViewSet)
 
 
 class BoxRegistrationEndpoint(generics.CreateAPIView):

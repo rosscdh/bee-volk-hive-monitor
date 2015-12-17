@@ -9,6 +9,7 @@ class Box(models.Model):
     slug = UUIDField(auto=True,
                      db_index=True,
                      null=True)
+    owner = models.ForeignKey('auth.User', blank=True, null=True)
     name = models.CharField(max_length=128, db_index=True, null=True, blank=True)
     mac_address = models.CharField(max_length=64, db_index=True)
     device_id = models.CharField(max_length=64, db_index=True)

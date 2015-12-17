@@ -180,7 +180,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
-        'toolkit.apps.api.permissions.ApiObjectPermission',
+        'beer.apps.api.permissions.ApiObjectPermission',
     ),
     'DEFAULT_MODEL_SERIALIZER_CLASS':
         'rest_framework.serializers.ModelSerializer',
