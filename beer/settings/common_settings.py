@@ -4,6 +4,7 @@ from ..local_settings import PROJECT_ENVIRONMENT
 from ..local_settings import ROLLBAR_POST_SERVER_ITEM_ACCESS_TOKEN
 
 import os
+import datetime
 
 DJANGO_ENV = os.getenv('DJANGO_ENV', os.getenv('RAILS_ENV', 'development'))
 
@@ -192,12 +193,18 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'rest_framework.filters.DjangoFilterBackend',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 30,
     'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 5,
-    'PAGINATE_BY': 30
 }
 
 JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+    'JWT_ALLOW_REFRESH': False,
+    'JWT_VERIFY_EXPIRATION': False,
+    'JWT_LEEWAY': 300,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=300),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }
 
 
