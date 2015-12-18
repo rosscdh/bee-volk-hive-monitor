@@ -14,7 +14,7 @@ class Hive(models.Model):
     name = models.CharField(max_length=128, db_index=True, null=True, blank=True)
     description = models.CharField(max_length=255)
     project = models.ForeignKey('project.Project', null=True, blank=True)
-    position = GeopositionField(default=['51.1935462','6.4479122999999845'])
+    position = GeopositionField(default='51.1935462,6.4479122999999845')
     data = JSONField(default={})
 
     def can_read(self, user):

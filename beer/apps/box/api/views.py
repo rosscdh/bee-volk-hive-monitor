@@ -25,8 +25,11 @@ class BoxViewSet(viewsets.ModelViewSet):
     serializer_class = BoxSerializer
     lookup_field = 'slug'
 
+    def get_queryset(self):
+        return self.queryset.filter(owner=self.request.user)
+
     def can_read(self, user):
-        return user == self.get_object().owner or user.is_staff
+        return user.is_authenticated()
 
     def can_edit(self, user):
         return user == self.get_object().owner or user.is_staff

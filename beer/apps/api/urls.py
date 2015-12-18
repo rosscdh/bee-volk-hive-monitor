@@ -4,7 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from rest_framework import routers
 
-from beer.apps.box.api.views import (BoxRegistrationEndpoint,
+from beer.apps.box.api.views import (BoxViewSet,
+                                     BoxRegistrationEndpoint,
                                      BoxPusherPresenceAuthEndpoint,)
 from beer.apps.hive.api.views import HiveViewSet
 
@@ -14,6 +15,7 @@ router = routers.SimpleRouter(trailing_slash=True)
 # Generic ViewSets
 #
 
+router.register(r'boxes', BoxViewSet)
 router.register(r'hives', HiveViewSet)
 
 #

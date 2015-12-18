@@ -3,6 +3,7 @@ from django.db import models
 
 from uuidfield import UUIDField
 from jsonfield import JSONField
+from geoposition.fields import GeopositionField
 
 
 class Box(models.Model):
@@ -15,6 +16,7 @@ class Box(models.Model):
     device_id = models.CharField(max_length=64, db_index=True)
     # project = models.ForeignKey('project.Project', null=True, blank=True)
     # playlist = models.ForeignKey('playlist.Playlist', null=True, blank=True)
+    position = GeopositionField(default='51.1935462,6.4479122999999845')
     data = JSONField(default={})
 
     @property
