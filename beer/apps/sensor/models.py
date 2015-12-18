@@ -23,6 +23,9 @@ SENSOR_STATUSES = get_namedtuple_choices('SENSOR_STATUSES', (
 
 
 class Sensor(models.Model):
+    SENSOR_TYPES = SENSOR_TYPES
+    SENSOR_STATUSES = SENSOR_STATUSES
+
     uuid = UUIDField(auto=True, db_index=True)
     name = models.CharField(choices=SENSOR_TYPES.get_choices(), max_length=128, db_index=True)
     status = models.CharField(choices=SENSOR_STATUSES.get_choices(), max_length=128, db_index=True)
