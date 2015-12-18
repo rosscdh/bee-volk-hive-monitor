@@ -14,14 +14,8 @@ class Hive(models.Model):
     name = models.CharField(max_length=128, db_index=True, null=True, blank=True)
     description = models.CharField(max_length=255)
     project = models.ForeignKey('project.Project', null=True, blank=True)
-    position = GeopositionField()
+    position = GeopositionField(default=['51.1935462','6.4479122999999845'])
     data = JSONField(default={})
-
-    def get_position(self):
-        return {
-            'latitude': getattr(self.position, 'latitude', None),
-            'longitude': getattr(self.position, 'longitude', None),
-        }
 
     def can_read(self, user):
         return user.is_authenticated()
