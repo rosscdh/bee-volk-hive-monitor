@@ -44,7 +44,7 @@ django-pipeline==1.5.1
 django-rest-auth==0.6.0
 django-rest-swagger==0.3.2
 django-rulez==1.0.2
--e git+https://github.com/rosscdh/django-templated-email@fd2eabd4afa0da520d5e8ffb3dc07a397a2cfbd3#egg=django_templated_email-origin/attachments
+-e git+https://github.com/rosscdh/django-templated-email@fd2eabd4afa0da520d5e8ffb3dc07a397a2cfbd3#egg=django_templated_email-origin\attachments
 django-uuidfield==0.5.0
 djangorestframework==3.3.2
 djangorestframework-hstore==1.3
@@ -72,7 +72,7 @@ model-mommy==1.2.6
 ndg-httpsclient==0.4.0
 oauthlib==1.0.3
 paramiko==1.15.3
--e git+https://github.com/rosscdh/pinax-eventlog.git@d1018d626db926dee6593bc7f51dd653659367b1#egg=pinax_eventlog-origin/feature/dateoverride
+-e git+https://github.com/rosscdh/pinax-eventlog.git@d1018d626db926dee6593bc7f51dd653659367b1#egg=pinax_eventlog-origin\feature\dateoverride
 pinax-stripe==3.0.0
 psycopg2==2.6.1
 pusher==1.2.3
