@@ -2,8 +2,8 @@
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status as http_status
-from rest_framework.decorators import detail_route
 
+from rest_framework.permissions import AllowAny
 from ..signals.base import log_bet_event, log_influx_event
 
 from pinax.eventlog.models import Log
@@ -16,6 +16,7 @@ class EventCreate(generics.ListCreateAPIView):
     model = Log
     serializer_class = LogSerializer
     queryset = Log.objects.all()
+    permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
         try:
@@ -36,7 +37,7 @@ class EventCreate(generics.ListCreateAPIView):
             request_data['original_sender'] = sender
 
         log_bet_event.send(sender=self, action='created', **request_data)
-
+        #import pdb;pdb.set_trace()
         if sensor_action is not None:
             log_influx_event.send(sender=self, action=sensor_action, **request_data)
 
