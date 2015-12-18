@@ -1,7 +1,8 @@
 {
   "source": null,
   "tags": {
-    "device_id": "00000000d390eefe"
+    "device_id": "00000000d390eefe",
+    "sensor_id": "45a4a252aeb7442a865a90a63e088792"
   },
   "temperature": 24.0,
   "sensor_action": "temperature,humidity",
