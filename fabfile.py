@@ -596,11 +596,10 @@ def deploy(is_predeploy='False',full='False',db='False',search='False'):
     do_deploy()
     #paths()
     put_confs()
-
-    requirements()
-
     relink()
+    requirements()
     update_env_conf()
-    assets()
+    migrate()
+    #assets()
     clean_start()
     #crontabs()

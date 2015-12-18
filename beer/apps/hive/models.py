@@ -17,6 +17,12 @@ class Hive(models.Model):
     position = GeopositionField()
     data = JSONField(default={})
 
+    def get_position(self):
+        return {
+            'latitude': getattr(self.position, 'latitude', None),
+            'longitude': getattr(self.position, 'longitude', None),
+        }
+
     def can_read(self, user):
         return user.is_authenticated()
 
