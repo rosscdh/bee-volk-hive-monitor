@@ -7,6 +7,7 @@ from rest_framework import routers
 from beer.apps.box.api.views import (BoxViewSet,
                                      BoxRegistrationEndpoint,
                                      BoxPusherPresenceAuthEndpoint,)
+from beer.apps.sensor.api.views import SensorViewSet
 from beer.apps.hive.api.views import HiveViewSet
 
 router = routers.SimpleRouter(trailing_slash=True)
@@ -16,6 +17,7 @@ router = routers.SimpleRouter(trailing_slash=True)
 #
 
 router.register(r'boxes', BoxViewSet)
+router.register(r'sensors', SensorViewSet)
 router.register(r'hives', HiveViewSet)
 
 #

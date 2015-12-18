@@ -46,6 +46,7 @@ PROJECT_APPS = (
     'beer.apps.role_permission',
 
     'beer.apps.box',
+    'beer.apps.sensor',
     'beer.apps.evt',
 
     'beer.apps.hive',

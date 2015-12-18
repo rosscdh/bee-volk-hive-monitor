@@ -9,7 +9,7 @@ from geoposition.fields import GeopositionField
 
 
 class Hive(models.Model):
-    uuid = UUIDField(auto=True)
+    uuid = UUIDField(auto=True, db_index=True)
     users = models.ManyToManyField('auth.User')
     name = models.CharField(max_length=128, db_index=True, null=True, blank=True)
     description = models.CharField(max_length=255)
