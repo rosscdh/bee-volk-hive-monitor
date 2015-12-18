@@ -18,8 +18,6 @@ class HiveViewSet(viewsets.ModelViewSet):
     lookup_field = 'uuid'
 
     def get_queryset(self):
-        if self.request.user.is_staff is True:
-            return self.queryset
         return self.queryset.filter(users__in=[self.request.user])
 
     def can_read(self, user):
