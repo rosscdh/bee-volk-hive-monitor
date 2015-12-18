@@ -2,7 +2,7 @@
 from rest_framework import serializers
 
 from drf_extra_fields.geo_fields import PointField
-
+from beer.apps.api.fields import GeopositionSerializerField
 from ..models import Hive
 
 
@@ -11,7 +11,7 @@ class HiveSerializer(serializers.ModelSerializer):
     address = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
     sensors = serializers.SerializerMethodField()
-    position = PointField(source='get_position')
+    position = GeopositionSerializerField()
 
     class Meta:
         model = Hive
