@@ -7,4 +7,4 @@ from ..models import Sensor
 class SensorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sensor
-        exclude = ('data', 'boxes')
+        exclude = ('boxes',)
