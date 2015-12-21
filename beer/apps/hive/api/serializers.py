@@ -10,7 +10,7 @@ class HiveSerializer(serializers.ModelSerializer):
     photo = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
-    sensors = SensorSerializer()
+    sensors = SensorSerializer(many=True)
     position = GeopositionSerializerField()
 
     class Meta:
