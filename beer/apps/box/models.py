@@ -8,15 +8,12 @@ from geoposition.fields import GeopositionField
 
 class Box(models.Model):
     slug = UUIDField(auto=True,
-                     db_index=True,
-                     null=True)
+                     db_index=True)
     owner = models.ForeignKey('auth.User', blank=True, null=True)
     name = models.CharField(max_length=128, db_index=True, null=True, blank=True)
-    mac_address = models.CharField(max_length=64, db_index=True)
-    device_id = models.CharField(max_length=64, db_index=True)
-    # project = models.ForeignKey('project.Project', null=True, blank=True)
-    # playlist = models.ForeignKey('playlist.Playlist', null=True, blank=True)
-    position = GeopositionField(default='51.1935462,6.4479122999999845')
+    mac_address = models.CharField(max_length=64, db_index=True, null=True, blank=True)
+    device_id = models.CharField(max_length=64, db_index=True, null=True, blank=True)
+    position = GeopositionField(default='51.1935462,6.4479122999999845', null=True, blank=True)
     data = JSONField(default={})
 
     @property

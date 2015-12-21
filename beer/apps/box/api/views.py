@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework import views
 from rest_framework import viewsets
@@ -8,7 +7,6 @@ from rest_framework.response import Response
 
 from rulez import registry as rulez_registry
 
-from beer.apps.project.models import Project
 from beer.pusher_services import PusherAuthService
 
 from ..models import (Box,)
@@ -28,11 +26,19 @@ class BoxViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(owner=self.request.user)
 
+    def create(self, request):
+        if self.request.method == 'POST':
+            self.request.data['owner'] = self.request.user.pk
+
+        return super(BoxViewSet, self).create(request)
+
     def can_read(self, user):
         return user.is_authenticated()
 
     def can_edit(self, user):
-        return user == self.get_object().owner or user.is_staff
+        if self.request.method == 'POST':
+            return True
+        return user in self.get_object().users.all() or user.is_staff
 
     def can_delete(self, user):
         return user == self.get_object().owner or user.is_staff
@@ -51,7 +57,8 @@ class BoxRegistrationEndpoint(generics.CreateAPIView):
         status_code = status.HTTP_200_OK
 
         request_data = request.data.copy()
-        request_data['remote_ip'] = request.META.get('HTTP_X_FORWARDED_FOR', request.META.get('REMOTE_ADDR'))
+        request_data['remote_ip'] = request.META.get('HTTP_X_FORWARDED_FOR',
+                                                     request.META.get('REMOTE_ADDR'))
 
         extra_data = {}
 
