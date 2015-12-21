@@ -3,7 +3,7 @@ from django.db import models
 
 from rulez import registry as rulez_registry
 
-from uuidfield import UUIDField
+from shortuuidfield import ShortUUIDField as UUIDField
 from jsonfield import JSONField
 
 from beer.utils import get_namedtuple_choices
@@ -31,6 +31,9 @@ class Sensor(models.Model):
     status = models.CharField(choices=SENSOR_STATUSES.get_choices(), max_length=128, db_index=True)
     boxes = models.ManyToManyField('box.Box')
     data = JSONField(default={})
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.name, self.uuid)
 
     def can_read(self, user):
         return user.is_authenticated()

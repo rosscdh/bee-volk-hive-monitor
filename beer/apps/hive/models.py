@@ -3,7 +3,7 @@ from django.db import models
 
 from rulez import registry as rulez_registry
 
-from uuidfield import UUIDField
+from shortuuidfield import ShortUUIDField as UUIDField
 from jsonfield import JSONField
 from geoposition.fields import GeopositionField
 
@@ -15,7 +15,11 @@ class Hive(models.Model):
     description = models.CharField(max_length=255)
     project = models.ForeignKey('project.Project', null=True, blank=True)
     position = GeopositionField(default='51.1935462,6.4479122999999845')
+    sensors = models.ManyToManyField('sensor.Sensor')
     data = JSONField(default={})
+
+    def __unicode__(self):
+        return '%s - %s' % (self.name, self.description)
 
     def can_read(self, user):
         return user.is_authenticated()

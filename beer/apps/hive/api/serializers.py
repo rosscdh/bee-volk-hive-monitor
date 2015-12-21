@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from rest_framework import serializers
 
-from drf_extra_fields.geo_fields import PointField
 from beer.apps.api.fields import GeopositionSerializerField
+from beer.apps.sensor.api.serializers import SensorSerializer
 from ..models import Hive
 
 
@@ -10,7 +10,7 @@ class HiveSerializer(serializers.ModelSerializer):
     photo = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
-    sensors = serializers.SerializerMethodField()
+    sensors = SensorSerializer()
     position = GeopositionSerializerField()
 
     class Meta:
@@ -25,6 +25,3 @@ class HiveSerializer(serializers.ModelSerializer):
 
     def get_status(self, obj):
         return obj.data.get('status', 'no-record')
-
-    def get_sensors(self, obj):
-        return []

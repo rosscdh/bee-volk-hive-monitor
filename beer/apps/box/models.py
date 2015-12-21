@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
-from uuidfield import UUIDField
+from shortuuidfield import ShortUUIDField as UUIDField
 from jsonfield import JSONField
 from geoposition.fields import GeopositionField
 
@@ -25,4 +25,4 @@ class Box(models.Model):
         self.data['remote_ip'] = value
 
     def __unicode__(self):
-        return '%s - %s (%s)' % (self.name, self.device_id, self.remote_ip)
+        return '%s' % self.slug
