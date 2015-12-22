@@ -6,8 +6,8 @@ from django.contrib.auth import get_user_model
 
 from crispy_forms.layout import HTML, Layout
 
-from payments.forms import PlanForm
-from payments.models import Customer
+from pinax.stripe.forms import PlanForm
+from pinax.stripe.models import Customer
 
 from beer.mixins import ModalForm
 
@@ -73,7 +73,7 @@ class PlanChangeForm(PlanForm, ModalForm):
 
     @property
     def action_url(self):
-        return reverse('me:plan-change', kwargs={'plan':self.plan['stripe_plan_id']})
+        return reverse('payment_plans:plan-change', kwargs={'plan':self.plan['stripe_plan_id']})
 
     @property
     def title(self):
@@ -122,4 +122,4 @@ class AccountCancelForm(ModalForm, forms.Form):
 
     @property
     def action_url(self):
-        return reverse('me:cancel')
+        return reverse('payment_plans:cancel')

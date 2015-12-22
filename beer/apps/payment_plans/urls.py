@@ -11,8 +11,7 @@ from .views import (PaymentListView,
                     # TwoFactorDisableView,
                     # TwoFactorEnableView,
                     # TwoFactorVerifyView,
-
-                    AccountSettingsView,)
+                    )
 
 
 urlpatterns = patterns(
@@ -25,7 +24,7 @@ urlpatterns = patterns(
     # url(r'^settings/two-factor/disable/$', login_required(TwoFactorDisableView.as_view()), name='two-factor-disable'),
     # url(r'^settings/two-factor/enable/$', login_required(TwoFactorEnableView.as_view()), name='two-factor-enable'),
     # url(r'^settings/two-factor/verify/$', login_required(TwoFactorVerifyView.as_view()), name='two-factor-verify'),
-    url(r'^settings/$', login_required(AccountSettingsView.as_view()), name='settings'),
+    #url(r'^settings/$', login_required(AccountSettingsView.as_view()), name='settings'),
 
     url(r'^cancel/$', login_required(AccountCancelView.as_view()), name='cancel'),
 )

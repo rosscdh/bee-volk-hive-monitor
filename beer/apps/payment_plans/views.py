@@ -14,8 +14,7 @@ from pinax.stripe.models import Charge, Customer
 from beer.mixins import AjaxFormView, AjaxModelFormView, ModalView
 
 
-from .forms import (AccountSettingsForm,
-                    PlanChangeForm,
+from .forms import (PlanChangeForm,
                     AccountCancelForm)
 
 import logging
@@ -24,21 +23,21 @@ logger = logging.getLogger('django.request')
 User = get_user_model()
 
 
-class AccountSettingsView(UpdateView):
-    form_class = AccountSettingsForm
-    model = User
-    success_url = reverse_lazy('me:settings')
-    template_name = 'user/settings/account.html'
+# class AccountSettingsView(UpdateView):
+#     form_class = AccountSettingsForm
+#     model = User
+#     success_url = reverse_lazy('me:settings')
+#     template_name = 'user/settings/account.html'
 
-    def get_form_kwargs(self):
-        kwargs = super(AccountSettingsView, self).get_form_kwargs()
-        kwargs.update({
-            'request': self.request
-        })
-        return kwargs
+#     def get_form_kwargs(self):
+#         kwargs = super(AccountSettingsView, self).get_form_kwargs()
+#         kwargs.update({
+#             'request': self.request
+#         })
+#         return kwargs
 
-    def get_object(self, queryset=None):
-        return self.request.user
+#     def get_object(self, queryset=None):
+#         return self.request.user
 
 
 class PaymentListView(ListView):

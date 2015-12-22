@@ -14,10 +14,12 @@ urlpatterns = patterns('',
                        url(r'^auth/', include('rest_auth.urls')),
                        url(r'^auth/registration/', include('rest_auth.registration.urls')),
                        url(r'^accounts/', include('allauth.urls')),
-                       # url(r'^payment/', include('beer.apps.payment_plans.urls')),
 
                        url(r'^v1/docs/', include('rest_framework_swagger.urls')),
                        url(r'^v1/', include('beer.apps.api.urls', namespace='api')),
+
                        url(r'^', include('django.contrib.auth.urls')),
+                       url(r'^', include('beer.apps.payment_plans.urls', namespace='payment_plans')),
+
                        ) + static(settings.STATIC_URL,
                                   document_root=settings.STATIC_ROOT)

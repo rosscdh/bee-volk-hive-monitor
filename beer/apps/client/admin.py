@@ -9,9 +9,9 @@ class ClientAdmin(admin.ModelAdmin):
     search_fields = ('name', 'slug', 'owner__first_name', 'owner__last_name')
 
     def get_queryset(self, request):
-        return super(ClientAdmin, self).queryset(request=request).select_related('lawyer')
+        return super(ClientAdmin, self).get_queryset(request=request).select_related('owner')
 
 
-admin.site.register(Client, ClientAdmin)
+# admin.site.register(Client, ClientAdmin)
 
 

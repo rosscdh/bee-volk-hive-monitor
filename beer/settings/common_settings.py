@@ -182,7 +182,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
-        'beer.apps.api.permissions.ApiObjectPermission',
+        #'beer.apps.api.permissions.ApiObjectPermission',
     ),
     'DEFAULT_MODEL_SERIALIZER_CLASS':
         'rest_framework.serializers.ModelSerializer',
@@ -259,6 +259,18 @@ INFLUX_DB = {
 
 PINAX_STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "your test public key")
 PINAX_STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "your test secret key")
+
+PAYMENTS_PLANS = {
+    "early-bird-monthly": {
+        "stripe_plan_id": "early-bird-monthly",
+        "name": "Early Bird",
+        "description": "Signup for the HiveEmpire Early Bird plan and save!<br /> Available for a limited time only.",
+        "features": "Priority Support<br/>No long-term commitment",
+        "price": 12,
+        "currency": "euro",
+        "interval": "month"
+    }
+}
 
 try:
     env_path = os.path.join(BASE_DIR, 'config/environments/{DJANGO_ENV}/beer/local_settings.py'.format(DJANGO_ENV=DJANGO_ENV))
