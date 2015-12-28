@@ -251,10 +251,17 @@ PUSHER_SECRET = '01d612aade08edc9dfde'
 
 INFLUX_DB = {
     'host': os.getenv('INFLUX_DB_HOST', '192.168.99.100'),
-    'port': os.getenv('INFLUX_DB_PORT', '32770'),
+    'port': os.getenv('INFLUX_DB_PORT', '32772'),
     'username': os.getenv('INFLUX_DB_USERNAME', 'root'),
     'password': os.getenv('INFLUX_DB_PASSWORD', 'root'),
     'database': os.getenv('INFLUX_DB_DATABASE', 'beekeep'),
+}
+INFLUX_DB = {
+    'host': 'api.hive-empire.com',
+    'port': '8086',
+    'username': 'root',
+    'password': 'root',
+    'database': 'beekeep',
 }
 
 PINAX_STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "your test public key")

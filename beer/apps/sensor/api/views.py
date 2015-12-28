@@ -56,19 +56,27 @@ class SensorViewSet(viewsets.ModelViewSet):
         """
         Return the tieline of graph data to the api
         """
+        #import pdb;pdb.set_trace()
+        sensor = self.get_object()
+
+        box = sensor.boxes.all().first()
+        device_id = box.device_id
         resp = {'series': []}
-        device_id = '0000000055483a88'
+        #device_id = '0000000055483a88'
         #device_id = '00000000d390eefe'
         #print "select value FROM humidity where device_id = '{device_id}';".format(device_id=device_id)
 
-        result = influx_client.query("select value FROM humidity where device_id = '{device_id}';".format(device_id=device_id))
-        resp.get('series').append(result.raw.get('series')[0])
+        for sensor_type in ['temperature', 'humidity']:
+            query = "select value FROM {sensor_type} where device_id = '{device_id}' and time > now() - {time_limit};".format(device_id=device_id,
+                                                                                                                              sensor_type=sensor_type,
+                                                                                                                              time_limit=request.GET.get('time_limit', '1h'))
+            result = influx_client.query(query)
+            try:
+                resp.get('series').append(result.raw.get('series')[0])
+            except:
+                # @TODO add log here
+                pass
 
-        #print "select value FROM temperature where device_id = '{device_id}';".format(device_id=device_id)
-        result = influx_client.query("select value FROM temperature where device_id = '{device_id}';".format(device_id=device_id))
-        resp.get('series').append(result.raw.get('series')[0])
-
-        #return Response(InfluxTransform(result.raw).process())
         return Response(resp)
 
     def can_read(self, user):
