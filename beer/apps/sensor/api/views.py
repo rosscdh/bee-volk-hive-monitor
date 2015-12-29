@@ -3,8 +3,9 @@ from rest_framework import viewsets
 
 from rulez import registry as rulez_registry
 
-from rest_framework.decorators import detail_route
 from rest_framework.response import Response
+from rest_framework.decorators import detail_route
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from beer.apps.evt.signals.handlers import influx_client
 
@@ -36,6 +37,7 @@ class SensorViewSet(viewsets.ModelViewSet):
     """
     queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     lookup_field = 'uuid'
 
     def get_queryset(self):
