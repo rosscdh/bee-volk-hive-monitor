@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from rulez import registry as rulez_registry
 from geoposition import Geoposition
@@ -16,6 +17,7 @@ class HiveViewSet(viewsets.ModelViewSet):
     """
     queryset = Hive.objects.all()
     serializer_class = HiveSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     lookup_field = 'uuid'
 
     def get_queryset(self):
