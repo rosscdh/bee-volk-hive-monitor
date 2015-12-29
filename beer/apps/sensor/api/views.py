@@ -39,7 +39,10 @@ class SensorViewSet(viewsets.ModelViewSet):
     lookup_field = 'uuid'
 
     def get_queryset(self):
-        return self.queryset.filter(boxes__in=self.request.user.box_set.all())
+        if self.request.user.is_authenticated() is True:
+            return self.queryset.filter(boxes__in=self.request.user.box_set.all())
+        else:
+            return self.queryset.all()
 
     # def create(self, request):
     #     if self.request.method == 'POST':

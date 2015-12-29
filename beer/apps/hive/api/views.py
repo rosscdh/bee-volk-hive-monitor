@@ -19,7 +19,10 @@ class HiveViewSet(viewsets.ModelViewSet):
     lookup_field = 'uuid'
 
     def get_queryset(self):
-        return self.queryset.filter(users__in=[self.request.user])
+        if self.request.user.is_authenticated() is True:
+            return self.queryset.filter(users__in=[self.request.user])
+        else:
+            return self.queryset.filter(is_public=True)
 
     def create(self, request):
         if self.request.method == 'POST':
@@ -32,7 +35,7 @@ class HiveViewSet(viewsets.ModelViewSet):
         return super(HiveViewSet, self).create(request)
 
     def can_read(self, user):
-        return user.is_authenticated()
+        return user.is_authenticated() or self.object.is_public is True
 
     def can_edit(self, user):
         if self.request.method == 'POST':

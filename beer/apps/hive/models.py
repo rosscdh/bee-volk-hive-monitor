@@ -16,6 +16,7 @@ class Hive(models.Model):
     project = models.ForeignKey('project.Project', null=True, blank=True)
     position = GeopositionField(default='51.1935462,6.4479122999999845')
     sensors = models.ManyToManyField('sensor.Sensor')
+    is_public = models.BooleanField(default=False, db_index=True)
     data = JSONField(default={})
 
     def __unicode__(self):

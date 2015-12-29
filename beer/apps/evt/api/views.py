@@ -35,6 +35,11 @@ class EventCreate(generics.ListCreateAPIView):
         device_id = request_data.get('tags', {}).get('device_id')
         if device_id:
             device, device_is_new = Box.objects.get_or_create(device_id=device_id)
+            #
+            # @TODO this is temp while we only have v1 sensors
+            # set the devices temp sensors to have the provided data
+            #
+            device.sensor_set.all().update(data=request_data) # Remove once we start sending the specific sensor id
 
         sensor_id = request_data.get('tags', {}).get('sensor_id')
         if sensor_id:
