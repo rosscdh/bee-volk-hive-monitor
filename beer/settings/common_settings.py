@@ -76,6 +76,7 @@ HELPER_APPS = (
     'pinax.stripe',
 
     'rulez',
+    'django_rq',
 
 #    'actstream',
     'easy_thumbnails',
@@ -277,6 +278,15 @@ PAYMENTS_PLANS = {
         "currency": "euro",
         "interval": "month"
     }
+}
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 5,
+        'DEFAULT_TIMEOUT': 360,
+    },
 }
 
 try:

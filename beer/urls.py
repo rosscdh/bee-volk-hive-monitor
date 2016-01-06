@@ -15,6 +15,9 @@ urlpatterns = patterns('',
                        url(r'^auth/registration/', include('rest_auth.registration.urls')),
                        url(r'^accounts/', include('allauth.urls')),
 
+                       # Requeue
+                       url(r'^django-rq/', include('django_rq.urls')),
+
                        url(r'^v1/docs/', include('rest_framework_swagger.urls')),
                        url(r'^v1/', include('beer.apps.api.urls', namespace='api')),
 

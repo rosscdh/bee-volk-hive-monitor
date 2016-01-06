@@ -16,8 +16,18 @@ LOGGING = {
         'simple': {
             'format': '%(levelname)s %(message)s'
         },
+        "rq_console": {
+            "format": "%(asctime)s %(message)s",
+            "datefmt": "%H:%M:%S",
+        },
     },
     'handlers': {
+        "rq_console": {
+            "level": "DEBUG",
+            "class": "rq.utils.ColorizingStreamHandler",
+            "formatter": "rq_console",
+            "exclude": ["%(asctime)s"],
+        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -28,6 +38,10 @@ LOGGING = {
         'app': {
             'handlers': ['console'],
             'level': 'DEBUG',
+        },
+        "rq.worker": {
+            "handlers": ["rq_console", "console"],
+            "level": "DEBUG"
         },
         'django.request': {
             'handlers': ['console'],
@@ -53,6 +67,10 @@ if PROJECT_ENVIRONMENT in ['staging', 'production']:
                 'format': '%(asctime)s [%(levelname)s] [%(filename)s->%(funcName)s] %(message)s',
                 'datefmt': '%Y-%m-%d %H:%M:%S',
             },
+            "rq_console": {
+                "format": "%(asctime)s %(message)s",
+                "datefmt": "%H:%M:%S",
+            },
         },
         'handlers': {
             'papertrail_handler': {
@@ -65,12 +83,22 @@ if PROJECT_ENVIRONMENT in ['staging', 'production']:
                 'level': 'DEBUG',
                 'class': 'logging.StreamHandler',
                 'formatter': 'papertrail_format',
-            }
+            },
+            "rq_console": {
+                "level": "DEBUG",
+                "class": "rq.utils.ColorizingStreamHandler",
+                "formatter": "rq_console",
+                "exclude": ["%(asctime)s"],
+            },
         },
         'loggers': {
             'django.request': {
                 'handlers': ['papertrail_handler'],
                 'level': 'INFO',
+            },
+            "rq.worker": {
+                "handlers": ["papertrail_handler"],
+                "level": "DEBUG"
             },
         }
     }
