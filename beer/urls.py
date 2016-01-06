@@ -4,6 +4,8 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 
+from beer.apps.box.views import S3SignatureEndpoint
+
 
 urlpatterns = patterns('',
                        url(r'^admin/', include(admin.site.urls)),
@@ -20,6 +22,8 @@ urlpatterns = patterns('',
 
                        url(r'^v1/docs/', include('rest_framework_swagger.urls')),
                        url(r'^v1/', include('beer.apps.api.urls', namespace='api')),
+
+                       url(r'^s3/sign/$', S3SignatureEndpoint.as_view(), name='s3signature'),
 
                        url(r'^', include('django.contrib.auth.urls')),
                        url(r'^', include('beer.apps.payment_plans.urls', namespace='payment_plans')),

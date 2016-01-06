@@ -10,6 +10,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views.generic import TemplateView, RedirectView, FormView
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status as http_status
+from rest_framework.renderers import StaticHTMLRenderer
+
 from .forms import SignUpForm, SignInForm, VerifyTwoFactorForm
 
 from beer.apps.workspace.forms import InviteKeyForm
@@ -17,6 +22,10 @@ from beer.apps.workspace.models import InviteKey
 from beer.apps.payment_plans.mailers import ValidateEmailMailer
 
 from beer.core.services.analytics import AtticusFinch
+
+import base64
+import hmac
+import sha
 
 import logging
 logger = logging.getLogger('django.request')
@@ -287,6 +296,19 @@ class LogoutView(LogOutMixin, RedirectView):
     The logout view
     """
     url = '/'
+
+
+class S3SignatureEndpoint(APIView):
+    """
+    Provide a signed key for the sending object
+    """
+    renderer_classes = (StaticHTMLRenderer,)
+
+    def get(self, request, **kwargs):
+        to_sign = str(request.GET.get('to_sign'))
+        signature = base64.b64encode(hmac.new(settings.AWS_SECRET_ACCESS_KEY, to_sign, sha).digest())
+
+        return Response(signature, status=http_status.HTTP_200_OK)
 
 
 class DisclaimerView(TemplateView):
