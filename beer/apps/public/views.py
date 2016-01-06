@@ -17,11 +17,7 @@ from rest_framework.renderers import StaticHTMLRenderer
 
 from .forms import SignUpForm, SignInForm, VerifyTwoFactorForm
 
-from beer.apps.workspace.forms import InviteKeyForm
-from beer.apps.workspace.models import InviteKey
 from beer.apps.payment_plans.mailers import ValidateEmailMailer
-
-from beer.core.services.analytics import AtticusFinch
 
 import base64
 import hmac
@@ -121,9 +117,9 @@ class StartView(LogOutMixin, SaveNextUrlInSessionMixin, AuthenticateUserMixin, F
         return url
 
     def form_invalid(self, form):
-        analytics = AtticusFinch()
-        ip_address = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR'))
-        analytics.anon_event('user.login.invalid', distinct_id=form.data.get('email'), ip_address=ip_address)
+        # analytics = AtticusFinch()
+        # ip_address = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR'))
+        # analytics.anon_event('user.login.invalid', distinct_id=form.data.get('email'), ip_address=ip_address)
         return super(StartView, self).form_invalid(form=form)
 
     def form_valid(self, form):
@@ -142,68 +138,66 @@ class StartView(LogOutMixin, SaveNextUrlInSessionMixin, AuthenticateUserMixin, F
         else:
             self.login(user=self.authenticated_user)
 
-            analytics = AtticusFinch()
-
-            ip_address = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR'))
-            analytics.event('user.login', user=self.authenticated_user, ip_address=ip_address)
+            # analytics = AtticusFinch()
+            # ip_address = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR'))
+            # analytics.event('user.login', user=self.authenticated_user, ip_address=ip_address)
 
             logger.info('Signed-up IP_ADDRESS List: %s' % ip_address)
 
         return super(StartView, self).form_valid(form)
 
 
-class VerifyTwoFactorView(AuthenticateUserMixin, FormView):
-    form_class = VerifyTwoFactorForm
-    template_name = 'public/verify_two_factor.html'
+# class VerifyTwoFactorView(AuthenticateUserMixin, FormView):
+#     form_class = VerifyTwoFactorForm
+#     template_name = 'public/verify_two_factor.html'
 
-    def get(self, request, *args, **kwargs):
-        self.authenticated_user = self.get_user()
-        return super(VerifyTwoFactorView, self).get(request, *args, **kwargs)
+#     def get(self, request, *args, **kwargs):
+#         self.authenticated_user = self.get_user()
+#         return super(VerifyTwoFactorView, self).get(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        self.authenticated_user = self.get_user()
-        return super(VerifyTwoFactorView, self).post(request, *args, **kwargs)
+#     def post(self, request, *args, **kwargs):
+#         self.authenticated_user = self.get_user()
+#         return super(VerifyTwoFactorView, self).post(request, *args, **kwargs)
 
-    def get_form_kwargs(self):
-        kwargs = super(VerifyTwoFactorView, self).get_form_kwargs()
-        kwargs.update({
-            'request': self.request,
-            'user': self.authenticated_user,
-        })
-        return kwargs
+#     def get_form_kwargs(self):
+#         kwargs = super(VerifyTwoFactorView, self).get_form_kwargs()
+#         kwargs.update({
+#             'request': self.request,
+#             'user': self.authenticated_user,
+#         })
+#         return kwargs
 
-    def get_user(self):
-        try:
-            user = User.objects.get(username=self.request.session['user'])
-            user.backend = settings.AUTHENTICATION_BACKENDS[0]
-            return user
-        except KeyError:
-            raise Http404('No user found in the session')
+#     def get_user(self):
+#         try:
+#             user = User.objects.get(username=self.request.session['user'])
+#             user.backend = settings.AUTHENTICATION_BACKENDS[0]
+#             return user
+#         except KeyError:
+#             raise Http404('No user found in the session')
 
-    def form_valid(self, form):
-        try:
-            self.login(user=self.authenticated_user)
+#     def form_valid(self, form):
+#         try:
+#             self.login(user=self.authenticated_user)
 
-        except (UserNotFoundException, UserInactiveException):
-            return self.form_invalid(form=form)
+#         except (UserNotFoundException, UserInactiveException):
+#             return self.form_invalid(form=form)
 
-        analytics = AtticusFinch()
+#         # analytics = AtticusFinch()
+#         # ip_address = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR'))
+#         # analytics.event('user.login', user=self.authenticated_user, ip_address=ip_address)
 
-        ip_address = self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR'))
-        analytics.event('user.login', user=self.authenticated_user, ip_address=ip_address)
+#         logger.info('Logged-in IP_ADDRESS: %s' % ip_address)
 
-        logger.info('Logged-in IP_ADDRESS: %s' % ip_address)
+#         return super(VerifyTwoFactorView, self).form_valid(form)
 
-        return super(VerifyTwoFactorView, self).form_valid(form)
+#     def get_success_url(self):
+#         url = reverse('matter:list')
 
-    def get_success_url(self):
-        url = reverse('matter:list')
+#         next = self.request.session.get('next')
+#         if next is not None:
+#             url = next
 
-        next = self.request.session.get('next')
-        if next is not None:
-            url = next
-
-        return url
+#         return url
 
 
 class HomePageView(StartView):
@@ -217,78 +211,78 @@ class HomePageView(StartView):
             return super(HomePageView, self).dispatch(request, *args, **kwargs)
 
 
-class InviteKeySignInView(StartView):
-    form_class = InviteKeyForm
+# class InviteKeySignInView(StartView):
+#     form_class = InviteKeyForm
 
-    def dispatch(self, request, *args, **kwargs):
-        """
-        If we have a key in the url
-        """
-        response = None
-        if request.user.is_authenticated() is True:
-            logout(request)
+#     def dispatch(self, request, *args, **kwargs):
+#         """
+#         If we have a key in the url
+#         """
+#         response = None
+#         if request.user.is_authenticated() is True:
+#             logout(request)
 
-        if 'key' in kwargs and kwargs.get('key', None) is not None:
-            response = self.login_via_key(key=kwargs.get('key'))
+#         if 'key' in kwargs and kwargs.get('key', None) is not None:
+#             response = self.login_via_key(key=kwargs.get('key'))
 
-        if response is not None:
-            return response
-        else:
-            return super(InviteKeySignInView, self).dispatch(request, *args, **kwargs)
+#         if response is not None:
+#             return response
+#         else:
+#             return super(InviteKeySignInView, self).dispatch(request, *args, **kwargs)
 
-    def login_via_key(self, key=None):
-        if key is not None:
-            invite = InviteKey.objects.get(key=key)
+#     def login_via_key(self, key=None):
+#         if key is not None:
+#             invite = InviteKey.objects.get(key=key)
 
-            # set the next in the session
-            # this is due to the EnsureUserHasPasswordMiddleware
-            # which redirects to password if they have not set it
-            #self.request.session['next'] = next
+#             # set the next in the session
+#             # this is due to the EnsureUserHasPasswordMiddleware
+#             # which redirects to password if they have not set it
+#             #self.request.session['next'] = next
 
-            user = self.get_auth(invite_key=key)
-            self.login(user=user)
+#             user = self.get_auth(invite_key=key)
+#             self.login(user=user)
 
-            if self.request.user.is_authenticated() is True:
-                return HttpResponseRedirect(invite.next)
-        return None
+#             if self.request.user.is_authenticated() is True:
+#                 return HttpResponseRedirect(invite.next)
+#         return None
 
-    def get_auth(self, form=None, invite_key=None):
-        if invite_key is not None:
-            return authenticate(username=invite_key, password=None)
+#     def get_auth(self, form=None, invite_key=None):
+#         if invite_key is not None:
+#             return authenticate(username=invite_key, password=None)
 
-        if form is not None:
-            return authenticate(username=form.cleaned_data.get('invite_key'), password=None)
+#         if form is not None:
+#             return authenticate(username=form.cleaned_data.get('invite_key'), password=None)
 
-        return None
+#         return None
 
 
-class SignUpView(LogOutMixin, AuthenticateUserMixin, FormView):
-    """
-    signup view
-    """
-    template_name = 'public/signup.html'
-    form_class = SignUpForm
+# class SignUpView(LogOutMixin, AuthenticateUserMixin, FormView):
+#     """
+#     signup view
+#     """
+#     template_name = 'public/signup.html'
+#     form_class = SignUpForm
 
-    def get_success_url(self):
-        return reverse('matter:list') + '?' + urllib.urlencode({
-            'firstseen': 1
-        })
+#     def get_success_url(self):
+#         return reverse('matter:list') + '?' + urllib.urlencode({
+#             'firstseen': 1
+#         })
 
-    def form_valid(self, form):
-        # user a valid form log them in
+#     def form_valid(self, form):
+#         # user a valid form log them in
 
-        form.save()  # save the user
-        self.authenticate(form=form)  # log them in
+#         form.save()  # save the user
+#         self.authenticate(form=form)  # log them in
 
-        mailer = ValidateEmailMailer(((self.request.user.get_full_name(), self.request.user.email,),))
-        mailer.process(user=self.request.user)
+#         mailer = ValidateEmailMailer(((self.request.user.get_full_name(), self.request.user.email,),))
+#         mailer.process(user=self.request.user)
 
-        messages.info(self.request, 'Your account has been created. Please verify your email address. Check your email and click on the link that we\'ve sent you.')
+#         messages.info(self.request, 'Your account has been created. Please verify your email address. Check your email and click on the link that we\'ve sent you.')
 
-        analytics = AtticusFinch()
-        analytics.event('user.signup', user=self.request.user, ip_address=self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR')))
+#         # analytics = AtticusFinch()
+#         # analytics.event('user.signup', user=self.request.user, ip_address=self.request.META.get('HTTP_X_FORWARDED_FOR', self.request.META.get('REMOTE_ADDR')))
 
-        return super(SignUpView, self).form_valid(form)
+#         return super(SignUpView, self).form_valid(form)
 
 
 class LogoutView(LogOutMixin, RedirectView):
@@ -311,17 +305,17 @@ class S3SignatureEndpoint(APIView):
         return Response(signature, status=http_status.HTTP_200_OK)
 
 
-class DisclaimerView(TemplateView):
-    template_name = 'legal/disclaimer.html'
+# class DisclaimerView(TemplateView):
+#     template_name = 'legal/disclaimer.html'
 
 
-class PrivacyView(TemplateView):
-    template_name = 'legal/privacy.html'
+# class PrivacyView(TemplateView):
+#     template_name = 'legal/privacy.html'
 
 
-class TermsView(TemplateView):
-    template_name = 'legal/terms.html'
+# class TermsView(TemplateView):
+#     template_name = 'legal/terms.html'
 
 
-class LoginErrorView(TemplateView):
-    template_name = 'public/login_error.html'
+# class LoginErrorView(TemplateView):
+#     template_name = 'public/login_error.html'

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 
-from beer.apps.box.views import S3SignatureEndpoint
+from beer.apps.public.views import S3SignatureEndpoint
 
 
 urlpatterns = patterns('',
