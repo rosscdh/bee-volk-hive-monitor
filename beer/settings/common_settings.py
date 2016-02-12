@@ -95,7 +95,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     #    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'pipeline.middleware.MinifyHTMLMiddleware',
     'django.middleware.gzip.GZipMiddleware',
     # must come last
@@ -255,18 +254,12 @@ AWS_STORAGE_BUCKET_NAME = 'dev-hiveempire'
 
 INFLUX_DB = {
     'host': os.getenv('INFLUX_DB_HOST', '192.168.99.100'),
-    'port': os.getenv('INFLUX_DB_PORT', '32772'),
+    'port': os.getenv('INFLUX_DB_PORT', '32792'),
     'username': os.getenv('INFLUX_DB_USERNAME', 'root'),
     'password': os.getenv('INFLUX_DB_PASSWORD', 'root'),
     'database': os.getenv('INFLUX_DB_DATABASE', 'beekeep'),
 }
-INFLUX_DB = {
-    'host': 'api.hive-empire.com',
-    'port': '8086',
-    'username': 'root',
-    'password': 'root',
-    'database': 'beekeep',
-}
+
 
 PINAX_STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "your test public key")
 PINAX_STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "your test secret key")

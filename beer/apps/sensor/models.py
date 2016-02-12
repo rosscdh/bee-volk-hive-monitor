@@ -21,6 +21,11 @@ SENSOR_STATUSES = get_namedtuple_choices('SENSOR_STATUSES', (
     ('disconnected', 'disconnected', 'Disconnected'),
 ))
 
+API_VERSIONS = get_namedtuple_choices('SENSOR_STATUSES', (
+    (1, 'v1', 'Version 1 (Wired)'),
+    (2, 'v2', 'Version 2 (Wireless)'),
+))
+
 
 class Sensor(models.Model):
     SENSOR_TYPES = SENSOR_TYPES
@@ -30,6 +35,7 @@ class Sensor(models.Model):
     name = models.CharField(choices=SENSOR_TYPES.get_choices(), max_length=128, db_index=True)
     status = models.CharField(choices=SENSOR_STATUSES.get_choices(), max_length=128, db_index=True)
     boxes = models.ManyToManyField('box.Box')
+    version = models.IntegerField(choices=API_VERSIONS.get_choices(), max_length=4, db_index=True)
     data = JSONField(default={})
 
     def __unicode__(self):
