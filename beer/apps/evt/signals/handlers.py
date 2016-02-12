@@ -41,7 +41,7 @@ def _log_influx_event(sender, signal, action, *args, **kwargs):
         json_body.append({
             "measurement": metric,
             "tags": kwargs.get('tags', {}),
-            "time": arrow.utcnow().isoformat(),
+            "time": kwargs.get('timestamp', arrow.utcnow().isoformat()),
             "fields": {
                 "value": kwargs.get(metric)
             }
