@@ -64,7 +64,8 @@ class EventCreate(generics.ListCreateAPIView):
 
         if sensor_id:
 
-            sensor, sensor_is_new = Sensor.objects.get_or_create(uuid=sensor_id)
+            sensor, sensor_is_new = Sensor.objects.get_or_create(uuid=sensor_id,
+                                                                 version=api_version)
 
             if sensor_action:
                 # Extract the sensor_actions from the sensor data
