@@ -254,7 +254,7 @@ AWS_STORAGE_BUCKET_NAME = 'dev-hiveempire'
 
 INFLUX_DB = {
     'host': os.getenv('INFLUX_DB_HOST', '192.168.99.100'),
-    'port': os.getenv('INFLUX_DB_PORT', '32792'),
+    'port': os.getenv('INFLUX_DB_PORT', '32794'),
     'username': os.getenv('INFLUX_DB_USERNAME', 'root'),
     'password': os.getenv('INFLUX_DB_PASSWORD', 'root'),
     'database': os.getenv('INFLUX_DB_DATABASE', 'beekeep'),

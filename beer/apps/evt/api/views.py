@@ -4,6 +4,7 @@ from django.template.defaultfilters import slugify
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status as http_status
+from rest_framework.exceptions import ValidationError
 
 from pinax.eventlog.models import Log
 from rest_framework.permissions import AllowAny
@@ -42,44 +43,55 @@ class EventCreate(generics.ListCreateAPIView):
 
         except AttributeError:
             # is plain json data
-            request_data = request.data.copy()
+            if hasattr(request.data, '__iter__') is True:
+                # is a list
+                request_data = request.data
+            else:
+                # Copy it and make it a list
+                request_data = [request.data.copy()]
 
-        api_version = request_data.get('api_version', 1)  # Default to 1
-        sensor_action = request_data.get('sensor_action', '')
+        for item in request_data:
 
-        device_id = request_data.get('tags', {}).get('device_id')
-        sensor_id = request_data.get('tags', {}).get('sensor_id')
+            api_version = item.get('api_version', 1)  # Default to 1
+            sensor_action = item.get('sensor_action', '')
 
-        if device_id:
+            device_id = item.get('tags', {}).get('device_id')
+            sensor_id = item.get('tags', {}).get('sensor_id')
 
-            device, device_is_new = Box.objects.get_or_create(device_id=device_id)
+            if not device_id:
+                raise ValidationError('You must provide a HiveEmpire-Sense device_id')
+            else:
 
-            if api_version in [1]:
-                #
-                # @TODO this is temp while we only have v1 sensors
-                # set the devices temp sensors to have the provided data
-                # Remove once we start sending the specific sensor id
-                #
-                device.sensor_set.filter(version=api_version).update(data=request_data)
+                device, device_is_new = Box.objects.get_or_create(device_id=device_id)
 
-        if sensor_id:
+                if api_version in [1]:
+                    #
+                    # @TODO this is temp while we only have v1 sensors
+                    # set the devices temp sensors to have the provided data
+                    # Remove once we start sending the specific sensor id
+                    #
+                    device.sensor_set.filter(version=api_version).update(data=item)
 
-            sensor, sensor_is_new = Sensor.objects.get_or_create(uuid=sensor_id,
-                                                                 version=api_version)
+            if not sensor_id:
+                raise ValidationError('You must provide a HiveEmpire sensor_id')
+            else:
+                sensor, sensor_is_new = Sensor.objects.get_or_create(uuid=sensor_id,
+                                                                     version=api_version)
 
-            if sensor_action:
-                # Extract the sensor_actions from the sensor data
-                for action in sensor_action.split(','):
-                    sensor.data[self.transpose_action(action=action)] = request_data.get(action)
+                if sensor_action:
+                    # Extract the sensor_actions from the sensor data
+                    for action in sensor_action.split(','):
+                        sensor.data[self.transpose_action(action=action)] = item.pop(action, None)
 
-                sensor.save(update_fields=['data'])
-                log_influx_event.send(sender=self,
-                                      action=sensor_action,
-                                      **request_data)
+                    sensor.save(update_fields=['data'])
 
-        log_bet_event.send(sender=self,
-                           action='created',
-                           **request_data)
+                    log_influx_event.send(sender=self,
+                                          action=sensor_action,
+                                          **item)
 
+            log_bet_event.send(sender=self,
+                               action='created',
+                               **item)
 
-        return Response({'message': 'created'}, status=http_status.HTTP_201_CREATED)
+        return Response({'message': 'created'},
+                        status=http_status.HTTP_201_CREATED)

@@ -1,4 +1,4 @@
-{
+[{
   "source": null,
   "tags": {
     "device_id": "00000000d390eefe",
@@ -7,4 +7,4 @@
   "temperature": 24.0,
   "sensor_action": "temperature,humidity",
   "humidity": 23.0
-}
+}]
