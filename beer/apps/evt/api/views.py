@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status as http_status
 from rest_framework.exceptions import ValidationError
 
+from rest_hooks.signals import raw_hook_event
+
 from pinax.eventlog.models import Log
 from rest_framework.permissions import AllowAny
 
@@ -14,6 +16,9 @@ from beer.apps.sensor.models import Sensor
 
 from ..signals.base import log_bet_event, log_influx_event
 from .serializers import LogSerializer
+
+import logging
+logger = logging.getLogger('django.request')
 
 
 class EventCreate(generics.ListCreateAPIView):
@@ -35,6 +40,19 @@ class EventCreate(generics.ListCreateAPIView):
         action = slugify(action)  # slugify the name
         return self.ACTION_MATRIX.get(action, action)
 
+    def send_webhooks(self, user, data):
+        if not user:
+            logger.error('Could not send webhook, No user specified')
+        else:
+            logger.error('Sending webhook')
+
+            raw_hook_event.send(
+                sender=self.__class__,
+                event_name='event.webhook.send',
+                payload=data,
+                user=user
+            )
+
     def create(self, request, *args, **kwargs):
 
         try:
@@ -50,6 +68,9 @@ class EventCreate(generics.ListCreateAPIView):
                 # Copy it and make it a list
                 request_data = [request.data.copy()]
 
+        #
+        # Loop over the posted data
+        #
         for item in request_data:
 
             api_version = item.get('api_version', 1)  # Default to 1
@@ -58,6 +79,9 @@ class EventCreate(generics.ListCreateAPIView):
             device_id = item.get('tags', {}).get('device_id')
             sensor_id = item.get('tags', {}).get('sensor_id')
 
+            #
+            # Perform device (HiveEmpire-Sense) operations
+            #
             if not device_id:
                 raise ValidationError('You must provide a HiveEmpire-Sense device_id')
             else:
@@ -72,6 +96,9 @@ class EventCreate(generics.ListCreateAPIView):
                     #
                     device.sensor_set.filter(version=api_version).update(data=item)
 
+            #
+            # Perform specific sensor operations
+            #
             if not sensor_id:
                 raise ValidationError('You must provide a HiveEmpire sensor_id')
             else:
@@ -81,17 +108,31 @@ class EventCreate(generics.ListCreateAPIView):
                 if sensor_action:
                     # Extract the sensor_actions from the sensor data
                     for action in sensor_action.split(','):
+                        #
+                        # Transpose sensor names
+                        #
                         sensor.data[self.transpose_action(action=action)] = item.pop(action, None)
 
                     sensor.save(update_fields=['data'])
 
+                    #
+                    # Send data to influx db
+                    #
                     log_influx_event.send(sender=self,
                                           action=sensor_action,
                                           **item)
-
+            #
+            # Record this data as an event
+            #
             log_bet_event.send(sender=self,
                                action='created',
                                **item)
+
+        #
+        # Send the Webhooks, if any
+        #
+        self.send_webhooks(user=device.owner,
+                           data=request_data)
 
         return Response({'message': 'created'},
                         status=http_status.HTTP_201_CREATED)

@@ -35,7 +35,7 @@ class Sensor(models.Model):
     name = models.CharField(choices=SENSOR_TYPES.get_choices(), max_length=128, db_index=True)
     status = models.CharField(choices=SENSOR_STATUSES.get_choices(), max_length=128, db_index=True)
     boxes = models.ManyToManyField('box.Box')
-    version = models.IntegerField(choices=API_VERSIONS.get_choices(), max_length=4, db_index=True)
+    version = models.IntegerField(choices=API_VERSIONS.get_choices(), db_index=True)
     data = JSONField(default={})
 
     def __unicode__(self):

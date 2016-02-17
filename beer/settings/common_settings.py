@@ -80,6 +80,8 @@ HELPER_APPS = (
 
 #    'actstream',
     'easy_thumbnails',
+    # Webhooks
+    'rest_hooks',
 )
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + HELPER_APPS
@@ -284,6 +286,11 @@ RQ_QUEUES = {
         'DEFAULT_TIMEOUT': 360,
     },
 }
+
+#
+# Webhooks
+#
+HOOK_EVENTS = {}
 
 try:
     env_path = os.path.join(BASE_DIR, 'config/environments/{DJANGO_ENV}/beer/local_settings.py'.format(DJANGO_ENV=DJANGO_ENV))
