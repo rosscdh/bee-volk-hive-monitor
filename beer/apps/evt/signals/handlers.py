@@ -40,13 +40,20 @@ def _log_influx_event(sender, signal, action, *args, **kwargs):
     """
     json_body = []
     default_timestamp = arrow.utcnow().isoformat()
+
     sent_timestamp = kwargs.get('timestamp', default_timestamp)
+
+    try:
+        iso_format_timestamp = arrow.get(datetime.datetime.fromtimestamp(sent_timestamp)).isoformat()
+    except ValueError:
+        # as per http://stackoverflow.com/questions/10286224/javascript-timestamp-to-python-datetime-conversion sending timestamp with milliseconds
+        iso_format_timestamp = arrow.get(datetime.datetime.fromtimestamp(sent_timestamp/1000)).isoformat()
 
     for metric in action.split(','):
         json_body.append({
             "measurement": metric,
             "tags": kwargs.get('tags', {}),
-            "time": arrow.get(datetime.datetime.fromtimestamp(sent_timestamp)).isoformat(),
+            "time": iso_format_timestamp,
             "fields": {
                 "value": kwargs.get(metric)
             }
