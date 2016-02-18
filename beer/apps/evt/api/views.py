@@ -72,7 +72,6 @@ class EventCreate(generics.ListCreateAPIView):
         # Loop over the posted data
         #
         for item in request_data:
-            import pdb;pdb.set_trace()
             api_version = item.get('api_version', 1)  # Default to 1
             sensor_action = item.get('sensor_action', '')
 
