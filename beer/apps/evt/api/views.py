@@ -110,7 +110,7 @@ class EventCreate(generics.ListCreateAPIView):
                         #
                         # Transpose sensor names
                         #
-                        sensor.data[self.transpose_action(action=action)] = item.pop(action, None)
+                        sensor.data[self.transpose_action(action=action)] = item.get(action)
 
                     sensor.save(update_fields=['data'])
 

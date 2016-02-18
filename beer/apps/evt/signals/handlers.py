@@ -47,9 +47,10 @@ def _log_influx_event(sender, signal, action, *args, **kwargs):
         iso_format_timestamp = arrow.get(datetime.datetime.fromtimestamp(sent_timestamp)).isoformat()
     except ValueError:
         # as per http://stackoverflow.com/questions/10286224/javascript-timestamp-to-python-datetime-conversion sending timestamp with milliseconds
-        iso_format_timestamp = arrow.get(datetime.datetime.fromtimestamp(sent_timestamp/1000)).isoformat()
+        iso_format_timestamp = arrow.get(datetime.datetime.fromtimestamp(sent_timestamp/1000.0)).isoformat()
 
     for metric in action.split(','):
+
         json_body.append({
             "measurement": metric,
             "tags": kwargs.get('tags', {}),
