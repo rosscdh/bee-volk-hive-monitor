@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 from .base import log_bet_event, log_influx_event
-import datetime
-import logging
 
 from django.conf import settings
 from django.dispatch import receiver
@@ -9,7 +7,10 @@ from django.dispatch import receiver
 from pinax.eventlog.models import log
 from requests.exceptions import ConnectionError
 
+
 import arrow
+import logging
+import datetime
 from influxdb import InfluxDBClient
 
 logger = logging.getLogger('django.request')
@@ -39,12 +40,13 @@ def _log_influx_event(sender, signal, action, *args, **kwargs):
     """
     json_body = []
     default_timestamp = arrow.utcnow().isoformat()
+    sent_timestamp = kwargs.get('timestamp', default_timestamp)
 
     for metric in action.split(','):
         json_body.append({
             "measurement": metric,
             "tags": kwargs.get('tags', {}),
-            "time": kwargs.get('timestamp', default_timestamp),
+            "time": arrow.get(datetime.datetime.fromtimestamp(sent_timestamp)).isoformat(),
             "fields": {
                 "value": kwargs.get(metric)
             }
