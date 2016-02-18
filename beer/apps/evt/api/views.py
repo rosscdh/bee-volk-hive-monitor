@@ -61,7 +61,7 @@ class EventCreate(generics.ListCreateAPIView):
 
         except AttributeError:
             # is plain json data
-            if hasattr(request.data, '__iter__') is True:
+            if type(request.data) is list:
                 # is a list
                 request_data = request.data
             else:
@@ -72,7 +72,7 @@ class EventCreate(generics.ListCreateAPIView):
         # Loop over the posted data
         #
         for item in request_data:
-
+            import pdb;pdb.set_trace()
             api_version = item.get('api_version', 1)  # Default to 1
             sensor_action = item.get('sensor_action', '')
 
