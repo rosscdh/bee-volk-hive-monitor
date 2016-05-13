@@ -31,7 +31,6 @@ class HiveViewSet(viewsets.ModelViewSet):
             self.request.data['users'] = [self.request.user.pk]
             latitude = self.request.data.get('latitude', '51.1935462')
             longitude = self.request.data.get('longitude', '6.4479122999999845')
-            #import pdb;pdb.set_trace()
             self.request.data['position'] = Geoposition(latitude, longitude)
 
         return super(HiveViewSet, self).create(request)

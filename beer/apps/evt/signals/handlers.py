@@ -11,6 +11,8 @@ from requests.exceptions import ConnectionError
 import arrow
 import logging
 import datetime
+import time
+import dateutil.parser as dateparser
 from influxdb import InfluxDBClient
 
 logger = logging.getLogger('django.request')
@@ -42,6 +44,10 @@ def _log_influx_event(sender, signal, action, *args, **kwargs):
     default_timestamp = arrow.utcnow().isoformat()
 
     sent_timestamp = kwargs.get('timestamp', default_timestamp)
+
+    if type(sent_timestamp) in [unicode, str]:
+        dt = dateparser.parse(sent_timestamp)
+        sent_timestamp = float(time.mktime(dt.timetuple()))
 
     try:
         iso_format_timestamp = arrow.get(datetime.datetime.fromtimestamp(sent_timestamp)).isoformat()

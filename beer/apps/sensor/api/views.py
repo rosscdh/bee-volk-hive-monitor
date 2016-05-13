@@ -61,7 +61,6 @@ class SensorViewSet(viewsets.ModelViewSet):
         """
         Return the tieline of graph data to the api
         """
-        #import pdb;pdb.set_trace()
         sensor = self.get_object()
 
         box = sensor.boxes.all().first()
