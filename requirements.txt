@@ -76,7 +76,7 @@ paramiko==1.15.3
 pinax-stripe==3.0.0
 psycopg2==2.6.1
 pusher==1.2.3
-pyOpenSSL==0.15.1
+pyOpenSSL==17.5.0
 pyasn1==0.1.9
 pycparser==2.14
 pycrypto==2.6.1
