@@ -46,7 +46,7 @@ django-rest-swagger==0.3.2
 django-rulez==1.0.2
 django-shortuuidfield==0.1.3
 -e git+https://github.com/rosscdh/django-templated-email@fd2eabd4afa0da520d5e8ffb3dc07a397a2cfbd3#egg=django_templated_email-origin\attachments
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 djangorestframework-hstore==1.3
 djangorestframework-jwt==1.7.2
 drf-extensions==0.2.8
