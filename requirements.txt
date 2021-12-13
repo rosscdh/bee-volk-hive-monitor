@@ -64,7 +64,7 @@ ipaddress==1.0.14
 jsonfield==1.0.3
 kombu==3.0.26
 livereload==2.4.0
-lxml==3.4.4
+lxml==4.6.5
 mkdocs==0.14.0
 mock==1.0.1
 mock-django==0.6.8
